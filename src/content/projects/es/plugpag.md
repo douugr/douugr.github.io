@@ -8,6 +8,7 @@ kind: SDK
 summary: SDK que integra las terminales de cobro de PagSeguro (Moderninha Pro, Wifi, Plus y Minizinha) con los sistemas de gestión comercial, con conciliación en tiempo real.
 stack: [Swift, SDK, Scrum]
 icon: /apps/pagbank/icon.webp
+relatedApp: pagbank
 ---
 
 ## Contexto

@@ -8,6 +8,7 @@ kind: SDK
 summary: SDK que integra as maquininhas do PagSeguro (Moderninha Pro, Wifi, Plus e Minizinha) à automação comercial, com conciliação em tempo real.
 stack: [Swift, SDK, Scrum]
 icon: /apps/pagbank/icon.webp
+relatedApp: pagbank
 ---
 
 ## Contexto

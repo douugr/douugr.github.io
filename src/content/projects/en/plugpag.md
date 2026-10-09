@@ -8,6 +8,7 @@ kind: SDK
 summary: SDK that connects PagSeguro's card terminals (Moderninha Pro, Wifi, Plus and Minizinha) to retail management systems, with real-time reconciliation.
 stack: [Swift, SDK, Scrum]
 icon: /apps/pagbank/icon.webp
+relatedApp: pagbank
 ---
 
 ## Context

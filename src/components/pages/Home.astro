@@ -120,7 +120,7 @@ const roleParts = roleText.split('SOFTWARE');
       <div class="wrap relative">
         <SectionTitle zone="zone 02 · act 1" title={t('apps.title')} kana="アプリ" subtitle={t('apps.subtitle')} shadow="yellow" inverse />
         <div class="grid gap-8 text-ink sm:grid-cols-2 lg:grid-cols-3">
-          {appKeys.map((key, i) => <AppCard appKey={key} lang={lang} projects={projects.filter((p) => p.data.app === key)} shadow={(['red', 'yellow', 'pink'] as const)[i % 3]} />)}
+          {appKeys.map((key, i) => <AppCard appKey={key} lang={lang} projects={projects.filter((p) => p.data.app === key || p.data.relatedApp === key)} shadow={(['red', 'yellow', 'pink'] as const)[i % 3]} />)}
         </div>
       </div>
     </div>
