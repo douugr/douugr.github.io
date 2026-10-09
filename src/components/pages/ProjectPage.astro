@@ -1,26 +1,40 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import AppIcon from '../../components/AppIcon.astro';
-import StoreBadges from '../../components/StoreBadges.astro';
-import Shape from '../../components/Shape.astro';
-import Tags from '../../components/Tags.astro';
+import AppIcon from '../AppIcon.astro';
+import StoreBadges from '../StoreBadges.astro';
+import Shape from '../Shape.astro';
+import Tags from '../Tags.astro';
 import { apps } from '../../data/apps';
+import { person } from '../../data/profile';
 import { caps } from '../../lib/caps';
+import { getProjects, type Project } from '../../lib/projects';
+import { langs, homePath, projectPath, useTranslations, type Lang } from '../../i18n/ui';
 
-export async function getStaticPaths() {
-  const projects = await getCollection('projects', ({ data }) => !data.draft);
-  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+interface Props {
+  lang: Lang;
+  project: Project;
 }
 
-const { project } = Astro.props;
+const { lang, project } = Astro.props;
+const t = useTranslations(lang);
 const { data } = project;
 const app = data.app ? apps[data.app] : undefined;
 const icon = data.icon ?? app?.icon;
 const { Content } = await render(project);
+
+// Só aponta para a tradução se ela existir; senão, leva para a home daquele idioma.
+const alternates = Object.fromEntries(
+  await Promise.all(
+    langs.map(async (l) => {
+      const exists = (await getProjects(l)).some((p) => p.slug === project.slug);
+      return [l, exists ? projectPath(l, project.slug) : homePath(l)];
+    }),
+  ),
+) as Record<Lang, string>;
 ---
 
-<Base title={`${data.title} · Douglas Neto`} description={data.summary}>
+<Base lang={lang} alternates={alternates} title={`${data.title} · ${person.name}`} description={data.summary}>
   <article>
     <!-- capa do projeto -->
     <header class="relative overflow-hidden">
@@ -32,7 +46,7 @@ const { Content } = await render(project);
       <Shape kind="triangle" color="pink" size={44} rotate={10} class="absolute top-10 right-[40%] hidden sm:block" float />
 
       <div class="wrap relative pt-10 pb-14">
-        <a href="/#projetos" class="hard-sm hard-hover inline-block bg-card px-3 py-1 font-pixel text-[11px]" style="--shadow: var(--color-blue)">← voltar</a>
+        <a href={`${homePath(lang)}#projetos`} class="hard-sm hard-hover inline-block bg-card px-3 py-1 font-pixel text-[11px]" style="--shadow: var(--color-blue)">{t('project.back')}</a>
 
         <div class="mt-10 flex flex-col gap-8 sm:flex-row sm:items-center">
           {icon && <AppIcon src={icon} alt="" class="size-24 shrink-0 sm:size-32" shadow="blue" />}
@@ -52,13 +66,13 @@ const { Content } = await render(project);
           <p class="text-xl leading-relaxed font-semibold">{data.summary}</p>
           <dl class="space-y-3 text-sm">
             <div>
-              <dt class="font-pixel text-[10px] text-yellow">empresa</dt>
-              <dd class="font-semibold">{data.company}{data.client && <span class="text-paper/75"> · para {data.client}</span>}</dd>
+              <dt class="font-pixel text-[10px] text-yellow">{t('project.company')}</dt>
+              <dd class="font-semibold">{data.company}{data.client && <span class="text-paper/75"> · {t('projects.for')} {data.client}</span>}</dd>
             </div>
             {
               app && (
                 <div>
-                  <dt class="font-pixel text-[10px] text-yellow">app</dt>
+                  <dt class="font-pixel text-[10px] text-yellow">{t('project.app')}</dt>
                   <dd class="font-semibold">{app.title}</dd>
                 </div>
               )
@@ -78,7 +92,7 @@ const { Content } = await render(project);
           <p class="mb-3 font-cond text-lg tracking-widest uppercase">Stack</p>
           <Tags items={data.stack} />
         </div>
-        {app && <StoreBadges appStore={app.appStore} />}
+        {app && <StoreBadges appStore={app.appStore} lang={lang} />}
       </aside>
     </div>
   </article>

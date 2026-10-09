@@ -1,0 +1,228 @@
+---
+import Base from '../../layouts/Base.astro';
+import SectionTitle from '../SectionTitle.astro';
+import HomeScreen from '../HomeScreen.astro';
+import ProjectCard from '../ProjectCard.astro';
+import AppCard from '../AppCard.astro';
+import Shape from '../Shape.astro';
+import Tags from '../Tags.astro';
+import { apps, type AppKey } from '../../data/apps';
+import { person, content } from '../../data/profile';
+import { caps } from '../../lib/caps';
+import { getProjects } from '../../lib/projects';
+import { langs, homePath, useTranslations, type Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const c = content[lang];
+const alternates = Object.fromEntries(langs.map((l) => [l, homePath(l)])) as Record<Lang, string>;
+
+const projects = await getProjects(lang);
+const appKeys = Object.keys(apps) as AppKey[];
+const homeApps = appKeys.map((key) => ({ name: apps[key].name, icon: apps[key].icon, href: `#app-${key}` }));
+const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
+---
+
+<Base lang={lang} alternates={alternates}>
+  <!-- ============ CAPA ============ -->
+  <section class="relative overflow-hidden">
+    <!-- blocos de cor -->
+    <div aria-hidden="true" class="absolute inset-0">
+      <div class="absolute top-16 right-[-6rem] size-[26rem] rounded-full border-4 border-ink bg-yellow sm:right-[-2rem] md:top-10 md:right-[4%] md:size-[34rem]"></div>
+      <div class="absolute inset-x-0 bottom-0 h-[55%] bg-red" style="clip-path: polygon(100% 0, 100% 100%, 35% 100%)"></div>
+      <div class="absolute inset-x-0 bottom-0 h-[45%] bg-blue" style="clip-path: polygon(0 0, 0 100%, 55% 100%)"></div>
+    </div>
+
+    <!-- rabiscos -->
+    <Shape kind="lollipop" color="yellow" size={60} rotate={-10} class="absolute top-6 left-[34%] hidden lg:block" float />
+    <Shape kind="squiggle" color="blue" size={100} rotate={-20} class="absolute top-[60%] left-[44%] hidden lg:block" float />
+    <Shape kind="triangle" color="blue" size={54} rotate={14} class="absolute top-8 right-[8%]" float />
+    <Shape kind="square" color="red" size={42} rotate={18} class="absolute top-[40%] left-[50%] hidden lg:block" float />
+    <Shape kind="zigzag" color="pink" size={90} rotate={-8} class="absolute right-[3%] bottom-[38%] hidden md:block" />
+    <Shape kind="half" color="yellow" size={50} rotate={-30} class="absolute bottom-[34%] left-[3%] hidden sm:block" float />
+    <Shape kind="dots" color="red" size={60} class="absolute top-24 right-[38%] hidden lg:block" />
+
+    <div class="wrap relative grid items-center gap-10 pt-12 pb-10 md:grid-cols-[1.25fr_1fr] md:pt-16">
+      <div class="relative z-10">
+        <p
+          lang="ja"
+          class="inline-block -rotate-3 border-[3px] border-ink bg-ink px-3 py-1 font-display text-lg text-paper sm:text-xl"
+          style="box-shadow: 5px 5px 0 var(--color-blue)"
+        >
+          {person.kana}
+        </p>
+
+        <h1 class="mt-6 font-display text-5xl leading-[0.9] min-[400px]:text-6xl sm:text-7xl lg:text-8xl" style="text-shadow: 5px 5px 0 var(--color-yellow), 8px 8px 0 var(--color-ink)">
+          DOUGLAS<br />NETO
+        </h1>
+        <p class="spaced mt-5 text-xs sm:text-sm">{caps(c.role)}</p>
+
+        <p class="mt-8 max-w-xl text-2xl leading-snug font-extrabold text-balance sm:text-3xl">{c.headline}</p>
+
+        <div class="mt-6 max-w-xl border-[3px] border-ink bg-card p-4 leading-relaxed" style="box-shadow: 6px 6px 0 var(--color-ink)">
+          {c.bio}
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#projetos" class="hard hard-hover bg-yellow px-5 py-2.5 font-cond text-lg tracking-widest uppercase" style="--shadow: var(--color-ink)">
+            {t('hero.ctaProjects')}
+          </a>
+          <a href="#contato" class="hard hard-hover bg-card px-5 py-2.5 font-cond text-lg tracking-widest uppercase" style="--shadow: var(--color-blue)">
+            {t('hero.ctaContact')}
+          </a>
+        </div>
+      </div>
+
+      <div class="relative z-10 mx-auto w-44 sm:w-56 md:mr-6 md:w-60">
+        <div class="rotate-6">
+          <HomeScreen apps={homeApps} />
+        </div>
+      </div>
+    </div>
+
+    <!-- faixa do título -->
+    <div class="relative z-10">
+      <div class="zigzag" style="--zz-color: var(--color-blue-deep)"></div>
+      <div class="bg-blue-deep pt-6 pb-8 text-paper">
+        <div class="wrap">
+          <p
+            class="block w-fit -skew-x-12 -rotate-1 font-cond text-4xl tracking-wide text-yellow uppercase sm:text-6xl md:text-7xl"
+            style="text-shadow: 4px 4px 0 var(--color-ink)"
+          >
+            {c.tagline}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROJETOS ============ -->
+  <section id="projetos" class="relative scroll-mt-14 overflow-hidden py-20">
+    <Shape kind="squiggle" color="red" size={120} rotate={10} class="absolute top-10 right-[5%] hidden sm:block" float />
+    <Shape kind="triangle" color="yellow" size={48} rotate={-12} class="absolute bottom-16 left-[2%] hidden lg:block" float />
+    <Shape kind="ring" color="pink" size={44} class="absolute top-1/2 right-[1.5%] hidden xl:block" />
+    <div class="wrap relative">
+      <SectionTitle zone="zone 01 · act 1" title={t('projects.title')} kana="プロジェクト" subtitle={t('projects.subtitle')} shadow="blue" />
+      <div class="grid gap-8 md:grid-cols-2">
+        {projects.map((project, i) => <ProjectCard project={project} lang={lang} shadow={shadows[i % shadows.length]} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ APPS ============ -->
+  <section id="apps" class="relative scroll-mt-14">
+    <div class="zigzag" style="--zz-color: var(--color-blue)"></div>
+    <div class="relative overflow-hidden bg-blue py-20 text-paper">
+      <div aria-hidden="true" class="absolute -right-24 -bottom-32 size-80 rounded-full border-4 border-ink bg-yellow"></div>
+      <Shape kind="bolt" color="yellow" size={50} rotate={12} class="absolute top-12 right-[6%]" float />
+      <Shape kind="zigzag" color="red" size={90} class="absolute bottom-10 left-[40%] hidden md:block" />
+      <div class="wrap relative">
+        <SectionTitle zone="zone 02 · act 1" title={t('apps.title')} kana="アプリ" subtitle={t('apps.subtitle')} shadow="yellow" inverse />
+        <div class="grid gap-8 text-ink sm:grid-cols-2 lg:grid-cols-3">
+          {appKeys.map((key, i) => <AppCard appKey={key} lang={lang} projects={projects.filter((p) => p.data.app === key)} shadow={(['red', 'yellow', 'pink'] as const)[i % 3]} />)}
+        </div>
+      </div>
+    </div>
+    <div class="zigzag down" style="--zz-color: var(--color-blue)"></div>
+  </section>
+
+  <!-- ============ CARREIRA ============ -->
+  <section id="experiencia" class="relative scroll-mt-14 overflow-hidden py-20">
+    <Shape kind="lollipop" color="blue" size={64} rotate={20} class="absolute top-16 right-[6%] hidden sm:block" float />
+    <Shape kind="dots" color="pink" size={60} class="absolute bottom-20 right-[10%] hidden md:block" />
+    <div class="wrap relative">
+      <SectionTitle zone="zone 03 · act 1" title={t('career.title')} kana="キャリア" shadow="pink" />
+      <ol class="relative ml-3 space-y-10 border-l-4 border-dashed border-ink pl-8">
+        {
+          c.experience.map((job) => (
+            <li class="relative">
+              <span aria-hidden="true" class="absolute top-0.5 -left-[3.05rem] size-8 rounded-full border-[6px] border-yellow bg-paper outline-[3px] outline-ink" />
+              <div class="flex flex-wrap items-center gap-3">
+                <p class="font-pixel text-xs">{job.period}</p>
+                {job.current && <span class="bg-red px-2 py-0.5 font-pixel text-[10px] text-paper">now playing</span>}
+              </div>
+              <h3 class="mt-2 font-display text-xl sm:text-2xl">{job.company}</h3>
+              <p class="font-cond text-base tracking-wide text-blue">{caps(job.role)}</p>
+              <p class="mt-2 max-w-2xl leading-relaxed text-muted">{job.description}</p>
+              <div class="mt-3">
+                <Tags items={job.stack} />
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ STACK ============ -->
+  <section id="stack" class="relative scroll-mt-14">
+    <div class="zigzag" style="--zz-color: var(--color-red)"></div>
+    <div class="relative overflow-hidden bg-red py-20 text-paper">
+      <div aria-hidden="true" class="absolute -right-20 -bottom-28 size-80 rounded-full border-4 border-ink bg-yellow"></div>
+      <Shape kind="square" color="yellow" size={44} rotate={-14} class="absolute top-14 right-[8%]" float />
+      <div class="wrap relative">
+        <SectionTitle zone="zone 04 · act 1" title={t('stack.title')} kana="スキル" shadow="blue" inverse />
+        <div class="grid gap-6 text-ink sm:grid-cols-2 lg:grid-cols-3">
+          {
+            c.skills.map((s, i) => (
+              <div class="hard bg-card p-5" style={`--shadow: var(--color-${shadows[i % shadows.length] === 'red' ? 'ink' : shadows[i % shadows.length]})`}>
+                <h3 class="mb-3 font-cond text-xl tracking-wide uppercase">{s.group}</h3>
+                <Tags items={s.items} />
+              </div>
+            ))
+          }
+          <div class="hard bg-card p-5" style="--shadow: var(--color-yellow)">
+            <h3 class="mb-3 font-cond text-xl tracking-wide uppercase">{t('stack.education')}</h3>
+            <ul class="space-y-3">
+              {
+                c.education.map((e) => (
+                  <li>
+                    <span class="font-semibold">{e.course}</span>
+                    <span class="block font-pixel text-[10px] text-muted">{e.school} · {e.period}</span>
+                  </li>
+                ))
+              }
+              {c.certifications.map((cert) => <li class="text-sm font-semibold text-blue">{cert}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="zigzag down" style="--zz-color: var(--color-red)"></div>
+  </section>
+
+  <!-- ============ CONTATO ============ -->
+  <section id="contato" class="relative scroll-mt-14 overflow-hidden py-24">
+    <div aria-hidden="true" class="absolute top-1/2 left-1/2 size-[30rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-ink bg-yellow sm:size-[36rem]"></div>
+    <Shape kind="squiggle" color="pink" size={110} rotate={-12} class="absolute top-10 left-[6%] hidden sm:block" float />
+    <Shape kind="triangle" color="red" size={50} rotate={20} class="absolute right-[8%] bottom-14" float />
+    <Shape kind="zigzag" color="blue" size={80} rotate={6} class="absolute top-16 right-[12%] hidden md:block" />
+    <div class="wrap relative text-center">
+      <p class="font-pixel text-xs tracking-widest text-blue">zone 05 · final</p>
+      <h2 class="mt-4 font-display text-4xl leading-tight sm:text-6xl" style="text-shadow: 4px 4px 0 var(--color-paper)">{t('contact.title')}</h2>
+      <p class="mx-auto mt-4 max-w-md text-lg font-semibold">{t('contact.subtitle')} {c.location}.</p>
+
+      <a
+        href={`mailto:${person.email}`}
+        class="hard hard-hover mt-10 inline-flex flex-col items-center bg-ink px-8 py-4 text-paper"
+        style="--shadow: var(--color-red)"
+      >
+        <span class="blink font-pixel text-sm text-yellow">press start</span>
+        <span class="mt-1 font-cond text-xl tracking-wider sm:text-2xl">{person.email}</span>
+      </a>
+
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <a href={person.social.linkedin} target="_blank" rel="noopener" class="hard-sm hard-hover bg-card px-4 py-2 font-cond tracking-widest uppercase" style="--shadow: var(--color-blue)">LinkedIn</a>
+        <a href={person.social.github} target="_blank" rel="noopener" class="hard-sm hard-hover bg-card px-4 py-2 font-cond tracking-widest uppercase" style="--shadow: var(--color-pink)">GitHub</a>
+        {
+          person.resumeUrl && (
+            <a href={person.resumeUrl} class="hard-sm hard-hover bg-card px-4 py-2 font-cond tracking-widest uppercase" style="--shadow: var(--color-red)">{t('contact.resume')}</a>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</Base>

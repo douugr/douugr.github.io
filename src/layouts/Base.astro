@@ -2,22 +2,24 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { profile } from '../data/profile';
+import { person, content } from '../data/profile';
+import { htmlLang, ogLocale, langs, defaultLang, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
+  lang: Lang;
+  /** Caminho equivalente desta página em cada idioma. */
+  alternates: Record<Lang, string>;
   title?: string;
   description?: string;
 }
 
-const {
-  title = `${profile.name} · ${profile.role}`,
-  description = profile.headline,
-} = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { lang, alternates, title = `${person.name} · ${content[lang].role}`, description = content[lang].headline } = Astro.props;
+const t = useTranslations(lang);
+const canonical = new URL(alternates[lang], Astro.site);
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={htmlLang[lang]}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,6 +27,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <meta name="theme-color" content="#111111" />
     <link rel="canonical" href={canonical} />
+    {langs.map((l) => <link rel="alternate" hreflang={htmlLang[l]} href={new URL(alternates[l], Astro.site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(alternates[defaultLang], Astro.site)} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
@@ -32,7 +36,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content={ogLocale[lang]} />
     <meta name="twitter:card" content="summary" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -44,12 +48,12 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body class="min-h-dvh overflow-x-clip font-sans">
     <a href="#conteudo" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-yellow focus:px-3 focus:py-2 focus:font-bold focus:text-ink">
-      Pular para o conteúdo
+      {t('skip')}
     </a>
-    <Header />
+    <Header lang={lang} alternates={alternates} />
     <main id="conteudo">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>

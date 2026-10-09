@@ -1,28 +1,61 @@
 ---
+import { languages, langs, homePath, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  alternates: Record<Lang, string>;
+}
+const { lang, alternates } = Astro.props;
+const t = useTranslations(lang);
+const home = homePath(lang);
 const links = [
-  { href: '/#projetos', label: 'Projetos' },
-  { href: '/#apps', label: 'Apps' },
-  { href: '/#experiencia', label: 'Carreira' },
-  { href: '/#stack', label: 'Stack' },
-  { href: '/#contato', label: 'Contato' },
+  { href: `${home}#projetos`, label: t('nav.projects') },
+  { href: `${home}#apps`, label: t('nav.apps') },
+  { href: `${home}#experiencia`, label: t('nav.career') },
+  { href: `${home}#stack`, label: t('nav.stack') },
+  { href: `${home}#contato`, label: t('nav.contact') },
 ];
 ---
 
 <header class="sticky top-0 z-40 border-b-[3px] border-ink bg-ink text-paper">
-  <nav class="wrap flex h-14 items-center justify-between gap-4">
-    <a href="/" class="shrink-0 font-pixel text-sm tracking-wider">
+  <nav class="wrap flex h-14 items-center justify-between gap-3">
+    <a href={home} class="shrink-0 font-pixel text-xs tracking-wider sm:text-sm">
       douugr<span class="text-yellow">.dev.br</span>
     </a>
-    <ul class="flex shrink-0 items-center gap-4 font-cond text-sm tracking-widest uppercase sm:gap-6 sm:text-base">
-      {
-        links.map((l, i) => (
-          <li class:list={[i > 1 && 'hidden sm:block']}>
-            <a href={l.href} class="decoration-yellow decoration-[3px] underline-offset-4 transition hover:text-yellow hover:underline">
-              {l.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+    <div class="flex shrink-0 items-center gap-4 sm:gap-6">
+      <ul class="hidden items-center gap-5 font-cond text-base tracking-widest uppercase md:flex">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href} class="decoration-yellow decoration-[3px] underline-offset-4 transition hover:text-yellow hover:underline">
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <ul class="flex md:hidden">
+        <li>
+          <a href={links[0].href} class="font-cond text-sm tracking-widest uppercase hover:text-yellow">{links[0].label}</a>
+        </li>
+      </ul>
+      <ul aria-label={t('lang.label')} class="flex border-2 border-paper/30 font-pixel text-[11px]">
+        {
+          langs.map((l) => (
+            <li>
+              <a
+                href={alternates[l]}
+                hreflang={l}
+                lang={l}
+                aria-current={l === lang ? 'true' : undefined}
+                class:list={['block px-1.5 py-0.5 transition', l === lang ? 'bg-yellow text-ink' : 'text-paper/80 hover:bg-paper hover:text-ink']}
+              >
+                {languages[l]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </nav>
 </header>

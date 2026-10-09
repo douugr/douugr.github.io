@@ -4,7 +4,7 @@ company: BRQ Digital Solutions
 client: Itaú Unibanco
 period: nov 2018 — jun 2020
 start: 2018-11-01
-role: Desenvolvedor iOS Júnior → Pleno
+role: Desenvolvedor iOS · Júnior → Pleno
 kind: Carteira digital
 summary: Plataforma do Itaú para pagar, receber, comprar e vender pelo celular, com transferências e pagamentos em poucos segundos.
 stack: [Swift, UIKit, Scrum]

@@ -1,9 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Shape from '../components/Shape.astro';
+import { langs, homePath, type Lang } from '../i18n/ui';
+
+const alternates = Object.fromEntries(langs.map((l) => [l, homePath(l)])) as Record<Lang, string>;
 ---
 
-<Base title="Game Over · douugr.dev.br">
+<Base lang="pt" alternates={alternates} title="Game Over · douugr.dev.br">
   <section class="relative overflow-hidden py-32 text-center">
     <div aria-hidden="true" class="absolute top-1/2 left-1/2 size-96 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-ink bg-yellow"></div>
     <Shape kind="squiggle" color="red" size={100} rotate={-10} class="absolute top-16 left-[10%]" float />
@@ -12,6 +15,7 @@ import Shape from '../components/Shape.astro';
       <p class="font-pixel text-sm">404</p>
       <h1 class="mt-2 font-display text-5xl sm:text-7xl" style="text-shadow: 4px 4px 0 var(--color-paper)">GAME OVER</h1>
       <p class="mt-4 font-semibold">Essa fase não existe.</p>
+      <p class="mt-1 text-sm text-muted" lang="en">This stage doesn’t exist · <span lang="es">Esta fase no existe</span></p>
       <a href="/" class="hard hard-hover mt-8 inline-block bg-ink px-6 py-3 font-pixel text-sm text-yellow" style="--shadow: var(--color-red)">
         continue? <span class="blink">▶</span>
       </a>

@@ -1,37 +1,40 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import AppIcon from './AppIcon.astro';
 import StoreBadges from './StoreBadges.astro';
 import { apps, type AppKey } from '../data/apps';
+import type { Project } from '../lib/projects';
+import { numberLocale, projectPath, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
   appKey: AppKey;
-  projects: CollectionEntry<'projects'>[];
+  projects: Project[];
+  lang: Lang;
   shadow?: 'blue' | 'red' | 'yellow' | 'pink';
 }
-const { appKey, projects, shadow = 'yellow' } = Astro.props;
+const { appKey, projects, lang, shadow = 'yellow' } = Astro.props;
+const t = useTranslations(lang);
 const app = apps[appKey];
 ---
 
 <article id={`app-${appKey}`} class="hard flex scroll-mt-24 flex-col bg-card p-5 sm:p-6" style={`--shadow: var(--color-${shadow})`}>
   <div class="flex items-center gap-4">
-    <AppIcon src={app.icon} alt={`Ícone do app ${app.name}`} class="size-16" shadow={shadow} />
+    <AppIcon src={app.icon} alt={`${t('apps.iconAlt')} ${app.name}`} class="size-16" shadow={shadow} />
     <div>
       <h3 class="font-display text-xl">{app.name}</h3>
-      <p class="text-sm font-semibold text-muted">{app.company}</p>
+      <p class="text-sm font-semibold text-muted">{app.company[lang]}</p>
     </div>
   </div>
   <p class="mt-4 inline-flex w-fit items-center gap-2 bg-ink px-2 py-1 font-pixel text-[11px] text-yellow">
-    ★ {app.rating.toLocaleString('pt-BR')} · {app.ratingCount} avaliações
+    ★ {app.rating.toLocaleString(numberLocale[lang])} · {app.ratingCount[lang]} {t('apps.ratings')}
   </p>
   {
     projects.length > 0 && (
       <div class="mt-5">
-        <p class="font-cond text-sm tracking-widest text-red uppercase">Projetos</p>
+        <p class="font-cond text-sm tracking-widest text-red uppercase">{t('apps.projects')}</p>
         <ul class="mt-1 space-y-1">
           {projects.map((p) => (
             <li>
-              <a href={`/projetos/${p.id}/`} class="font-semibold underline decoration-yellow decoration-[3px] underline-offset-4 hover:decoration-red">
+              <a href={projectPath(lang, p.slug)} class="font-semibold underline decoration-yellow decoration-[3px] underline-offset-4 hover:decoration-red">
                 {p.data.title}
               </a>
               <span class="ml-1 font-pixel text-[10px] text-muted">{p.data.period}</span>
@@ -42,6 +45,6 @@ const app = apps[appKey];
     )
   }
   <div class="mt-auto pt-6">
-    <StoreBadges appStore={app.appStore} />
+    <StoreBadges appStore={app.appStore} lang={lang} />
   </div>
 </article>

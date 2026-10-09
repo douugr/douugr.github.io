@@ -1,15 +1,18 @@
 ---
-import type { CollectionEntry } from 'astro:content';
 import AppIcon from './AppIcon.astro';
 import Tags from './Tags.astro';
 import { apps } from '../data/apps';
 import { caps } from '../lib/caps';
+import type { Project } from '../lib/projects';
+import { projectPath, useTranslations, type Lang } from '../i18n/ui';
 
 interface Props {
-  project: CollectionEntry<'projects'>;
+  project: Project;
+  lang: Lang;
   shadow?: 'blue' | 'red' | 'yellow' | 'pink';
 }
-const { project, shadow = 'blue' } = Astro.props;
+const { project, lang, shadow = 'blue' } = Astro.props;
+const t = useTranslations(lang);
 const { data } = project;
 const app = data.app ? apps[data.app] : undefined;
 const icon = data.icon ?? app?.icon;
@@ -24,10 +27,10 @@ const icon = data.icon ?? app?.icon;
     <div class="flex items-start justify-between gap-4">
       <div>
         <h3 class="font-display text-2xl leading-tight">
-          <a href={`/projetos/${project.id}/`} class="after:absolute after:inset-0 focus-visible:outline-none">{data.title}</a>
+          <a href={projectPath(lang, project.slug)} class="after:absolute after:inset-0 focus-visible:outline-none">{data.title}</a>
         </h3>
         <p class="mt-1 text-sm font-semibold text-muted">
-          {data.company}{data.client && <> · para {data.client}</>}
+          {data.company}{data.client && <> · {t('projects.for')} {data.client}</>}
         </p>
       </div>
       {icon && <AppIcon src={icon} alt="" class="size-14 shrink-0" shadow={shadow} />}

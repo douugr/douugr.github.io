@@ -1,19 +1,23 @@
 ---
-import { profile } from '../data/profile';
+import { person } from '../data/profile';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+const t = useTranslations(Astro.props.lang);
 ---
 
-<footer class="mt-0">
+<footer>
   <div class="zigzag" style="--zz-color: var(--color-ink)"></div>
   <div class="bg-ink pb-10 text-paper">
     <div class="wrap pt-10">
       <p class="spaced text-xs text-paper/80 sm:text-sm">DOUUGR TEAM PRESENTS</p>
       <div class="mt-6 flex flex-col gap-3 text-sm text-paper/70 sm:flex-row sm:items-center sm:justify-between">
-        <p>© {new Date().getFullYear()} {profile.fullName}</p>
-        <p class="font-pixel text-xs">feito com Astro · GitHub Pages</p>
+        <p>© {new Date().getFullYear()} {person.fullName}</p>
+        <p class="font-pixel text-xs">{t('footer.built')}</p>
       </div>
-      <p class="mt-6 max-w-2xl text-xs text-paper/50">
-        Marcas e ícones de apps pertencem às respectivas empresas. Este é um site pessoal, sem vínculo oficial com elas. Estética inspirada nas capas de videogame dos anos 90.
-      </p>
+      <p class="mt-6 max-w-2xl text-xs text-paper/50">{t('footer.note')}</p>
     </div>
   </div>
 </footer>

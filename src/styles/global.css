@@ -75,7 +75,12 @@ body {
   font-family: var(--font-sans);
   font-weight: 900;
   font-stretch: 125%;
-  letter-spacing: 0.45em;
+  letter-spacing: 0.25em;
+}
+@media (min-width: 640px) {
+  .spaced {
+    letter-spacing: 0.45em;
+  }
 }
 
 /* Borda serrilhada */
