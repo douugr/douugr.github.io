@@ -3,12 +3,15 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import SectionTitle from '../components/SectionTitle.astro';
 import HomeScreen from '../components/HomeScreen.astro';
-import AppIcon from '../components/AppIcon.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import AppCard from '../components/AppCard.astro';
 import Tags from '../components/Tags.astro';
+import { apps, type AppKey } from '../data/apps';
 import { profile, experience, skills, education, certifications } from '../data/profile';
 
-const apps = (await getCollection('apps', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
-const homeApps = apps.map((a) => ({ name: a.data.shortName, icon: a.data.icon, href: `/apps/${a.id}/` }));
+const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort((a, b) => b.data.start.valueOf() - a.data.start.valueOf());
+const appKeys = Object.keys(apps) as AppKey[];
+const homeApps = appKeys.map((key) => ({ name: apps[key].name, icon: apps[key].icon, href: `/#app-${key}` }));
 ---
 
 <Base>
@@ -28,7 +31,7 @@ const homeApps = apps.map((a) => ({ name: a.data.shortName, icon: a.data.icon, h
       <p class="mt-4 text-xl text-balance text-muted sm:text-2xl">{profile.headline}</p>
       <p class="mt-6 max-w-xl leading-relaxed text-muted">{profile.bio}</p>
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href="#apps" class="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-bg transition hover:opacity-90">Ver apps</a>
+        <a href="#projetos" class="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-bg transition hover:opacity-90">Ver projetos</a>
         <a href="#contato" class="rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent">Contato</a>
       </div>
     </div>
@@ -37,44 +40,25 @@ const homeApps = apps.map((a) => ({ name: a.data.shortName, icon: a.data.icon, h
     </div>
   </section>
 
+  <!-- Projetos -->
+  <section id="projetos" class="scroll-mt-20 py-16">
+    <SectionTitle index="01" title="Projetos" subtitle="Produtos de pagamento e banking em que atuei como desenvolvedor iOS, do mais recente ao mais antigo." />
+    <div class="grid gap-6 md:grid-cols-2">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
   <!-- Apps -->
   <section id="apps" class="scroll-mt-20 py-16">
-    <SectionTitle index="01" title="Apps em que trabalhei" subtitle="Apps financeiros com milhões de usuários, em que atuei no desenvolvimento iOS." />
+    <SectionTitle index="02" title="Apps" subtitle="Onde esses projetos chegam às mãos de milhões de pessoas." />
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        apps.map((app) => (
-          <article class="relative flex flex-col rounded-2xl border border-border bg-surface p-6 transition hover:-translate-y-0.5 hover:border-accent/60">
-            <div class="flex items-center gap-4">
-              <AppIcon src={app.data.icon} alt={`Ícone do app ${app.data.shortName}`} class="size-16" />
-              <div>
-                <p class="font-mono text-xs text-muted">{app.data.period}</p>
-                <p class="text-sm text-muted">{app.data.company}</p>
-              </div>
-            </div>
-            <h3 class="mt-5 text-lg font-semibold">
-              <a href={`/apps/${app.id}/`} class="after:absolute after:inset-0">
-                {app.data.shortName}
-              </a>
-            </h3>
-            <p class="text-sm font-medium text-accent">{app.data.role}</p>
-            <p class="mt-2 text-sm leading-relaxed text-muted">{app.data.summary}</p>
-            {app.data.rating && (
-              <p class="mt-4 font-mono text-xs text-muted">
-                ★ {app.data.rating.toLocaleString('pt-BR')} · {app.data.ratingCount} avaliações na App Store
-              </p>
-            )}
-            <div class="mt-auto pt-4">
-              <Tags items={app.data.stack} />
-            </div>
-          </article>
-        ))
-      }
+      {appKeys.map((key) => <AppCard appKey={key} projects={projects.filter((p) => p.data.app === key)} />)}
     </div>
   </section>
 
   <!-- Experiência -->
   <section id="experiencia" class="scroll-mt-20 py-16">
-    <SectionTitle index="02" title="Experiência" />
+    <SectionTitle index="03" title="Experiência" />
     <ol class="relative space-y-10 border-l border-border pl-6">
       {
         experience.map((job) => (
@@ -96,7 +80,7 @@ const homeApps = apps.map((a) => ({ name: a.data.shortName, icon: a.data.icon, h
 
   <!-- Stack -->
   <section id="stack" class="scroll-mt-20 py-16">
-    <SectionTitle index="03" title="Stack & formação" />
+    <SectionTitle index="04" title="Stack & formação" />
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         skills.map((s) => (
@@ -125,7 +109,7 @@ const homeApps = apps.map((a) => ({ name: a.data.shortName, icon: a.data.icon, h
 
   <!-- Contato -->
   <section id="contato" class="scroll-mt-20 py-16">
-    <SectionTitle index="04" title="Vamos conversar?" subtitle={`Aberto a oportunidades em iOS, mentorias e boas ideias de app. ${profile.location}.`} />
+    <SectionTitle index="05" title="Vamos conversar?" subtitle={`Aberto a oportunidades em iOS, mentorias e boas ideias de app. ${profile.location}.`} />
     <div class="flex flex-wrap gap-3">
       <a href={`mailto:${profile.email}`} class="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-bg transition hover:opacity-90">{profile.email}</a>
       <a href={profile.social.linkedin} target="_blank" rel="noopener" class="rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent">LinkedIn</a>
