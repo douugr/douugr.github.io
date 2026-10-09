@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import PhoneMockup from '../../components/PhoneMockup.astro';
+import AppIcon from '../../components/AppIcon.astro';
 import StoreBadges from '../../components/StoreBadges.astro';
 import Tags from '../../components/Tags.astro';
 
@@ -14,25 +14,30 @@ const { app } = Astro.props;
 const { Content } = await render(app);
 ---
 
-<Base title={`${app.data.title} · douugr.dev.br`} description={app.data.summary}>
+<Base title={`${app.data.shortName} · Douglas Neto`} description={app.data.summary}>
   <article class="py-16">
     <a href="/#apps" class="font-mono text-xs text-muted transition hover:text-accent">← voltar para apps</a>
 
-    <header class="mt-8 grid items-center gap-10 md:grid-cols-[1.5fr_1fr]">
+    <header class="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
+      <AppIcon src={app.data.icon} alt={`Ícone do app ${app.data.shortName}`} class="size-24 shrink-0 sm:size-28" />
       <div>
-        <p class="font-mono text-xs text-muted">{app.data.platforms.join(' · ')} · {app.data.year}</p>
-        <h1 class="mt-2 text-4xl font-bold tracking-tight">{app.data.title}</h1>
-        <p class="mt-3 text-lg text-muted">{app.data.summary}</p>
-        <dl class="mt-6 grid grid-cols-2 gap-4 text-sm">
+        <p class="font-mono text-xs text-muted">{app.data.company} · {app.data.period}</p>
+        <h1 class="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{app.data.title}</h1>
+        <p class="mt-3 max-w-2xl text-lg text-muted">{app.data.summary}</p>
+        <dl class="mt-6 flex flex-wrap gap-x-10 gap-y-4 text-sm">
           <div>
             <dt class="text-muted">Função</dt>
             <dd class="font-medium">{app.data.role}</dd>
           </div>
+          <div>
+            <dt class="text-muted">Plataforma</dt>
+            <dd class="font-medium">{app.data.platforms.join(' · ')}</dd>
+          </div>
           {
-            app.data.highlight && (
+            app.data.rating && (
               <div>
-                <dt class="text-muted">Destaque</dt>
-                <dd class="font-medium text-accent">{app.data.highlight}</dd>
+                <dt class="text-muted">App Store</dt>
+                <dd class="font-medium">★ {app.data.rating.toLocaleString('pt-BR')} · {app.data.ratingCount} avaliações</dd>
               </div>
             )
           }
@@ -41,9 +46,6 @@ const { Content } = await render(app);
           <Tags items={app.data.stack} />
           <StoreBadges appStore={app.data.appStore} playStore={app.data.playStore} />
         </div>
-      </div>
-      <div class="mx-auto w-48">
-        <PhoneMockup src={app.data.screenshot} alt={app.data.title} />
       </div>
     </header>
 

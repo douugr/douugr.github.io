@@ -1,0 +1,17 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+}
+const { src, alt, class: className = 'size-16' } = Astro.props;
+---
+
+<img
+  src={src}
+  alt={alt}
+  width="256"
+  height="256"
+  loading="lazy"
+  class:list={['rounded-[22.5%] shadow-sm ring-1 ring-black/5 dark:ring-white/10', className]}
+/>

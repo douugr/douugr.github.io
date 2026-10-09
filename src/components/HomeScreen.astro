@@ -1,0 +1,29 @@
+---
+import AppIcon from './AppIcon.astro';
+
+interface Props {
+  apps: { name: string; icon: string; href: string }[];
+}
+const { apps } = Astro.props;
+---
+
+<div class="relative aspect-[9/19.5] w-full rounded-[2.6rem] bg-neutral-900 p-2.5 shadow-2xl ring-1 ring-black/10 dark:ring-white/10">
+  <div class="absolute top-4 left-1/2 z-10 h-5 w-20 -translate-x-1/2 rounded-full bg-black"></div>
+  <div class="relative flex h-full w-full flex-col overflow-hidden rounded-[2.1rem] bg-gradient-to-br from-indigo-500 via-sky-500 to-amber-300 px-5 pt-14 dark:from-indigo-950 dark:via-sky-900 dark:to-amber-700">
+    <p class="text-center text-4xl font-light text-white/95 tabular-nums">9:41</p>
+    <p class="text-center text-xs text-white/80">apps em que trabalhei</p>
+    <ul class="mt-8 grid grid-cols-3 gap-x-3 gap-y-5">
+      {
+        apps.map((a) => (
+          <li>
+            <a href={a.href} class="flex flex-col items-center gap-1.5 transition hover:scale-105">
+              <AppIcon src={a.icon} alt="" class="size-12" />
+              <span class="text-[10px] font-medium whitespace-nowrap text-white drop-shadow">{a.name}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mt-auto mb-3 h-1 w-24 self-center rounded-full bg-white/70"></div>
+  </div>
+</div>

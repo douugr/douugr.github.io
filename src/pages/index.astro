@@ -2,16 +2,18 @@
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import SectionTitle from '../components/SectionTitle.astro';
-import PhoneMockup from '../components/PhoneMockup.astro';
+import HomeScreen from '../components/HomeScreen.astro';
+import AppIcon from '../components/AppIcon.astro';
 import Tags from '../components/Tags.astro';
-import { profile, experience, skills } from '../data/profile';
+import { profile, experience, skills, education, certifications } from '../data/profile';
 
 const apps = (await getCollection('apps', ({ data }) => !data.draft)).sort((a, b) => a.data.order - b.data.order);
+const homeApps = apps.map((a) => ({ name: a.data.shortName, icon: a.data.icon, href: `/apps/${a.id}/` }));
 ---
 
 <Base>
   <!-- Hero -->
-  <section class="grid items-center gap-12 py-20 sm:py-28 md:grid-cols-[1.4fr_1fr]">
+  <section class="grid items-center gap-12 py-20 sm:py-28 md:grid-cols-[1.5fr_1fr]">
     <div>
       {
         profile.available && (
@@ -30,32 +32,37 @@ const apps = (await getCollection('apps', ({ data }) => !data.draft)).sort((a, b
         <a href="#contato" class="rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent">Contato</a>
       </div>
     </div>
-    <div class="mx-auto hidden w-56 md:block">
-      <PhoneMockup alt="app em destaque" src={apps[0]?.data.screenshot} class="rotate-3" />
+    <div class="mx-auto w-60">
+      <HomeScreen apps={homeApps} />
     </div>
   </section>
 
   <!-- Apps -->
   <section id="apps" class="scroll-mt-20 py-16">
-    <SectionTitle index="01" title="Apps em destaque" subtitle="Produtos que ajudei a construir e publicar nas lojas." />
+    <SectionTitle index="01" title="Apps em que trabalhei" subtitle="Apps financeiros com milhões de usuários, em que atuei no desenvolvimento iOS." />
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {
         apps.map((app) => (
-          <article class="group relative flex flex-col rounded-2xl border border-border bg-surface p-5 transition hover:border-accent/60">
-            <div class="mx-auto mb-6 w-36">
-              <PhoneMockup src={app.data.screenshot} alt={app.data.title} />
+          <article class="relative flex flex-col rounded-2xl border border-border bg-surface p-6 transition hover:-translate-y-0.5 hover:border-accent/60">
+            <div class="flex items-center gap-4">
+              <AppIcon src={app.data.icon} alt={`Ícone do app ${app.data.shortName}`} class="size-16" />
+              <div>
+                <p class="font-mono text-xs text-muted">{app.data.period}</p>
+                <p class="text-sm text-muted">{app.data.company}</p>
+              </div>
             </div>
-            <div class="flex items-center justify-between font-mono text-xs text-muted">
-              <span>{app.data.platforms.join(' · ')}</span>
-              <span>{app.data.year}</span>
-            </div>
-            <h3 class="mt-2 text-lg font-semibold">
+            <h3 class="mt-5 text-lg font-semibold">
               <a href={`/apps/${app.id}/`} class="after:absolute after:inset-0">
-                {app.data.title}
+                {app.data.shortName}
               </a>
             </h3>
-            <p class="mt-1 text-sm text-muted">{app.data.summary}</p>
-            {app.data.highlight && <p class="mt-3 text-sm font-medium text-accent">{app.data.highlight}</p>}
+            <p class="text-sm font-medium text-accent">{app.data.role}</p>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{app.data.summary}</p>
+            {app.data.rating && (
+              <p class="mt-4 font-mono text-xs text-muted">
+                ★ {app.data.rating.toLocaleString('pt-BR')} · {app.data.ratingCount} avaliações na App Store
+              </p>
+            )}
             <div class="mt-auto pt-4">
               <Tags items={app.data.stack} />
             </div>
@@ -89,7 +96,7 @@ const apps = (await getCollection('apps', ({ data }) => !data.draft)).sort((a, b
 
   <!-- Stack -->
   <section id="stack" class="scroll-mt-20 py-16">
-    <SectionTitle index="03" title="Stack" />
+    <SectionTitle index="03" title="Stack & formação" />
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {
         skills.map((s) => (
@@ -99,17 +106,35 @@ const apps = (await getCollection('apps', ({ data }) => !data.draft)).sort((a, b
           </div>
         ))
       }
+      <div class="rounded-2xl border border-border bg-surface p-5">
+        <h3 class="mb-3 text-sm font-semibold">Formação</h3>
+        <ul class="space-y-2 text-sm">
+          {
+            education.map((e) => (
+              <li>
+                <span class="font-medium">{e.course}</span>
+                <span class="block font-mono text-xs text-muted">{e.school} · {e.period}</span>
+              </li>
+            ))
+          }
+          {certifications.map((c) => <li class="text-muted">{c}</li>)}
+        </ul>
+      </div>
     </div>
   </section>
 
   <!-- Contato -->
   <section id="contato" class="scroll-mt-20 py-16">
-    <SectionTitle index="04" title="Vamos conversar?" subtitle="Aberto a vagas, freelas e boas ideias de app." />
+    <SectionTitle index="04" title="Vamos conversar?" subtitle={`Aberto a oportunidades em iOS, mentorias e boas ideias de app. ${profile.location}.`} />
     <div class="flex flex-wrap gap-3">
       <a href={`mailto:${profile.email}`} class="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-bg transition hover:opacity-90">{profile.email}</a>
       <a href={profile.social.linkedin} target="_blank" rel="noopener" class="rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent">LinkedIn</a>
       <a href={profile.social.github} target="_blank" rel="noopener" class="rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent">GitHub</a>
-      <a href={profile.resumeUrl} class="rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent">Currículo (PDF)</a>
+      {
+        profile.resumeUrl && (
+          <a href={profile.resumeUrl} class="rounded-lg border border-border px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent">Currículo (PDF)</a>
+        )
+      }
     </div>
   </section>
 </Base>
