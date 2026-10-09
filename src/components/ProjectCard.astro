@@ -3,33 +3,40 @@ import type { CollectionEntry } from 'astro:content';
 import AppIcon from './AppIcon.astro';
 import Tags from './Tags.astro';
 import { apps } from '../data/apps';
+import { caps } from '../lib/caps';
 
 interface Props {
   project: CollectionEntry<'projects'>;
+  shadow?: 'blue' | 'red' | 'yellow' | 'pink';
 }
-const { project } = Astro.props;
+const { project, shadow = 'blue' } = Astro.props;
 const { data } = project;
 const app = data.app ? apps[data.app] : undefined;
 const icon = data.icon ?? app?.icon;
 ---
 
-<article class="relative flex flex-col rounded-2xl border border-border bg-surface p-6 transition hover:-translate-y-0.5 hover:border-accent/60">
-  <div class="flex items-start justify-between gap-4">
-    <div>
-      <p class="font-mono text-xs text-muted">{data.period}</p>
-      <h3 class="mt-1 text-xl font-semibold">
-        <a href={`/projetos/${project.id}/`} class="after:absolute after:inset-0">{data.title}</a>
-      </h3>
-      <p class="text-sm text-muted">
-        {data.company}{data.client && <> · para {data.client}</>}
-      </p>
-    </div>
-    {icon && <AppIcon src={icon} alt="" class="size-12 shrink-0" />}
+<article class="hard hard-hover relative flex flex-col bg-card" style={`--shadow: var(--color-${shadow})`}>
+  <div class="flex items-center justify-between gap-3 border-b-[3px] border-ink bg-ink px-4 py-2 text-paper">
+    <span class="font-pixel text-[11px]">{data.period}</span>
+    <span class="font-cond text-xs tracking-widest text-yellow uppercase">{data.kind}</span>
   </div>
-  <p class="mt-3 text-sm font-medium text-accent">{data.role} <span class="text-muted">· {data.kind}</span></p>
-  <p class="mt-2 text-sm leading-relaxed text-muted">{data.summary}</p>
-  {data.note && <p class="mt-3 text-xs text-muted italic">{data.note}</p>}
-  <div class="mt-auto pt-4">
-    <Tags items={data.stack} />
+  <div class="flex flex-1 flex-col p-5 sm:p-6">
+    <div class="flex items-start justify-between gap-4">
+      <div>
+        <h3 class="font-display text-2xl leading-tight">
+          <a href={`/projetos/${project.id}/`} class="after:absolute after:inset-0 focus-visible:outline-none">{data.title}</a>
+        </h3>
+        <p class="mt-1 text-sm font-semibold text-muted">
+          {data.company}{data.client && <> · para {data.client}</>}
+        </p>
+      </div>
+      {icon && <AppIcon src={icon} alt="" class="size-14 shrink-0" shadow={shadow} />}
+    </div>
+    <p class="mt-3 font-cond text-base tracking-wide text-red">{caps(data.role)}</p>
+    <p class="mt-2 leading-relaxed text-muted">{data.summary}</p>
+    {data.note && <p class="mt-3 border-l-4 border-yellow pl-3 text-sm text-muted italic">{data.note}</p>}
+    <div class="mt-auto pt-5">
+      <Tags items={data.stack} />
+    </div>
   </div>
 </article>

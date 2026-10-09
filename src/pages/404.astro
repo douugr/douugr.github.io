@@ -1,11 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
+import Shape from '../components/Shape.astro';
 ---
 
-<Base title="Página não encontrada · douugr.dev.br">
-  <section class="py-32 text-center">
-    <p class="font-mono text-sm text-accent">404</p>
-    <h1 class="mt-2 text-3xl font-bold">Essa tela não existe.</h1>
-    <a href="/" class="mt-6 inline-block text-sm text-muted underline hover:text-accent">Voltar para o início</a>
+<Base title="Game Over · douugr.dev.br">
+  <section class="relative overflow-hidden py-32 text-center">
+    <div aria-hidden="true" class="absolute top-1/2 left-1/2 size-96 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-ink bg-yellow"></div>
+    <Shape kind="squiggle" color="red" size={100} rotate={-10} class="absolute top-16 left-[10%]" float />
+    <Shape kind="triangle" color="blue" size={50} rotate={16} class="absolute right-[12%] bottom-20" float />
+    <div class="relative">
+      <p class="font-pixel text-sm">404</p>
+      <h1 class="mt-2 font-display text-5xl sm:text-7xl" style="text-shadow: 4px 4px 0 var(--color-paper)">GAME OVER</h1>
+      <p class="mt-4 font-semibold">Essa fase não existe.</p>
+      <a href="/" class="hard hard-hover mt-8 inline-block bg-ink px-6 py-3 font-pixel text-sm text-yellow" style="--shadow: var(--color-red)">
+        continue? <span class="blink">▶</span>
+      </a>
+    </div>
   </section>
 </Base>

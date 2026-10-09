@@ -7,39 +7,41 @@ import { apps, type AppKey } from '../data/apps';
 interface Props {
   appKey: AppKey;
   projects: CollectionEntry<'projects'>[];
+  shadow?: 'blue' | 'red' | 'yellow' | 'pink';
 }
-const { appKey, projects } = Astro.props;
+const { appKey, projects, shadow = 'yellow' } = Astro.props;
 const app = apps[appKey];
 ---
 
-<article id={`app-${appKey}`} class="flex flex-col rounded-2xl border border-border bg-surface p-6">
+<article id={`app-${appKey}`} class="hard flex scroll-mt-24 flex-col bg-card p-5 sm:p-6" style={`--shadow: var(--color-${shadow})`}>
   <div class="flex items-center gap-4">
-    <AppIcon src={app.icon} alt={`Ícone do app ${app.name}`} class="size-16" />
+    <AppIcon src={app.icon} alt={`Ícone do app ${app.name}`} class="size-16" shadow={shadow} />
     <div>
-      <h3 class="text-lg font-semibold">{app.name}</h3>
-      <p class="text-sm text-muted">{app.company}</p>
-      <p class="mt-1 font-mono text-xs text-muted">★ {app.rating.toLocaleString('pt-BR')} · {app.ratingCount} avaliações</p>
+      <h3 class="font-display text-xl">{app.name}</h3>
+      <p class="text-sm font-semibold text-muted">{app.company}</p>
     </div>
   </div>
+  <p class="mt-4 inline-flex w-fit items-center gap-2 bg-ink px-2 py-1 font-pixel text-[11px] text-yellow">
+    ★ {app.rating.toLocaleString('pt-BR')} · {app.ratingCount} avaliações
+  </p>
   {
     projects.length > 0 && (
-  <div class="mt-5">
-    <p class="mb-2 text-xs font-medium tracking-wide text-muted uppercase">Projetos</p>
-    <ul class="space-y-1 text-sm">
-      {
-        projects.map((p) => (
-          <li>
-            <a href={`/projetos/${p.id}/`} class="hover:text-accent">
-              {p.data.title} <span class="font-mono text-xs text-muted">· {p.data.period}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+      <div class="mt-5">
+        <p class="font-cond text-sm tracking-widest text-red uppercase">Projetos</p>
+        <ul class="mt-1 space-y-1">
+          {projects.map((p) => (
+            <li>
+              <a href={`/projetos/${p.id}/`} class="font-semibold underline decoration-yellow decoration-[3px] underline-offset-4 hover:decoration-red">
+                {p.data.title}
+              </a>
+              <span class="ml-1 font-pixel text-[10px] text-muted">{p.data.period}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     )
   }
-  <div class="mt-auto pt-5">
+  <div class="mt-auto pt-6">
     <StoreBadges appStore={app.appStore} />
   </div>
 </article>

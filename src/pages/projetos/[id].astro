@@ -3,8 +3,10 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import AppIcon from '../../components/AppIcon.astro';
 import StoreBadges from '../../components/StoreBadges.astro';
+import Shape from '../../components/Shape.astro';
 import Tags from '../../components/Tags.astro';
 import { apps } from '../../data/apps';
+import { caps } from '../../lib/caps';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects', ({ data }) => !data.draft);
@@ -19,43 +21,65 @@ const { Content } = await render(project);
 ---
 
 <Base title={`${data.title} · Douglas Neto`} description={data.summary}>
-  <article class="py-16">
-    <a href="/#projetos" class="font-mono text-xs text-muted transition hover:text-accent">← voltar para projetos</a>
+  <article>
+    <!-- capa do projeto -->
+    <header class="relative overflow-hidden">
+      <div aria-hidden="true" class="absolute inset-0">
+        <div class="absolute -top-20 -right-24 size-80 rounded-full border-4 border-ink bg-yellow sm:right-[6%] sm:size-96"></div>
+        <div class="absolute inset-x-0 bottom-0 h-2/3 bg-red" style="clip-path: polygon(100% 20%, 100% 100%, 50% 100%)"></div>
+      </div>
+      <Shape kind="squiggle" color="blue" size={100} rotate={-14} class="absolute top-24 left-[45%] hidden md:block" float />
+      <Shape kind="triangle" color="pink" size={44} rotate={10} class="absolute top-10 right-[40%] hidden sm:block" float />
 
-    <header class="mt-8 flex flex-col gap-6 sm:flex-row sm:items-start">
-      {icon && <AppIcon src={icon} alt="" class="size-24 shrink-0 sm:size-28" />}
-      <div>
-        <p class="font-mono text-xs text-muted">{data.kind} · {data.period}</p>
-        <h1 class="mt-1 text-3xl font-bold tracking-tight sm:text-4xl">{data.title}</h1>
-        <p class="mt-3 max-w-2xl text-lg text-muted">{data.summary}</p>
-        <dl class="mt-6 flex flex-wrap gap-x-10 gap-y-4 text-sm">
+      <div class="wrap relative pt-10 pb-14">
+        <a href="/#projetos" class="hard-sm hard-hover inline-block bg-card px-3 py-1 font-pixel text-[11px]" style="--shadow: var(--color-blue)">← voltar</a>
+
+        <div class="mt-10 flex flex-col gap-8 sm:flex-row sm:items-center">
+          {icon && <AppIcon src={icon} alt="" class="size-24 shrink-0 sm:size-32" shadow="blue" />}
           <div>
-            <dt class="text-muted">Função</dt>
-            <dd class="font-medium">{data.role}</dd>
+            <p class="inline-block bg-ink px-2 py-1 font-pixel text-[11px] text-yellow">{data.kind} · {data.period}</p>
+            <h1 class="mt-3 font-display text-5xl leading-none sm:text-7xl" style="text-shadow: 4px 4px 0 var(--color-yellow)">{data.title}</h1>
+            <p class="mt-4 block w-fit -skew-x-12 bg-ink px-3 py-1 font-cond text-xl tracking-wide text-paper" style="box-shadow: 5px 5px 0 var(--color-blue)">
+              {caps(data.role)}
+            </p>
           </div>
-          <div>
-            <dt class="text-muted">Empresa</dt>
-            <dd class="font-medium">{data.company}{data.client && <span class="text-muted"> · para {data.client}</span>}</dd>
-          </div>
-          {
-            app && (
-              <div>
-                <dt class="text-muted">App</dt>
-                <dd class="font-medium">{app.title}</dd>
-              </div>
-            )
-          }
-        </dl>
-        {data.note && <p class="mt-4 text-sm text-muted italic">{data.note}</p>}
-        <div class="mt-6 space-y-4">
-          <Tags items={data.stack} />
-          {app && <StoreBadges appStore={app.appStore} />}
+        </div>
+      </div>
+
+      <div class="relative zigzag" style="--zz-color: var(--color-blue-deep)"></div>
+      <div class="relative bg-blue-deep py-8 text-paper">
+        <div class="wrap grid gap-6 md:grid-cols-[2fr_1fr]">
+          <p class="text-xl leading-relaxed font-semibold">{data.summary}</p>
+          <dl class="space-y-3 text-sm">
+            <div>
+              <dt class="font-pixel text-[10px] text-yellow">empresa</dt>
+              <dd class="font-semibold">{data.company}{data.client && <span class="text-paper/75"> · para {data.client}</span>}</dd>
+            </div>
+            {
+              app && (
+                <div>
+                  <dt class="font-pixel text-[10px] text-yellow">app</dt>
+                  <dd class="font-semibold">{app.title}</dd>
+                </div>
+              )
+            }
+          </dl>
         </div>
       </div>
     </header>
 
-    <div class="prose-case mt-16 max-w-2xl">
-      <Content />
+    <div class="wrap grid gap-12 py-16 md:grid-cols-[2fr_1fr]">
+      <div class="prose-case max-w-2xl">
+        {data.note && <p class="!mt-0 border-[3px] border-ink bg-yellow px-4 py-3 font-semibold !text-ink">{data.note}</p>}
+        <Content />
+      </div>
+      <aside class="space-y-6">
+        <div class="hard bg-card p-5" style="--shadow: var(--color-red)">
+          <p class="mb-3 font-cond text-lg tracking-widest uppercase">Stack</p>
+          <Tags items={data.stack} />
+        </div>
+        {app && <StoreBadges appStore={app.appStore} />}
+      </aside>
     </div>
   </article>
 </Base>
@@ -63,21 +87,50 @@ const { Content } = await render(project);
 <style>
   .prose-case :global(h2) {
     margin-top: 2.5rem;
-    font-size: 1.25rem;
-    font-weight: 600;
+    display: inline-block;
+    background: var(--color-ink);
+    color: var(--color-paper);
+    padding: 0.15rem 0.75rem;
+    font-family: var(--font-cond);
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transform: skewX(-8deg);
+    box-shadow: 5px 5px 0 var(--color-blue);
+  }
+  .prose-case :global(h2:first-child) {
+    margin-top: 0;
   }
   .prose-case :global(p),
   .prose-case :global(li) {
-    margin-top: 0.75rem;
+    margin-top: 0.9rem;
     line-height: 1.75;
-    color: var(--muted);
+    color: var(--color-muted);
+    font-size: 1.05rem;
+  }
+  .prose-case :global(strong) {
+    color: var(--color-ink);
   }
   .prose-case :global(ul) {
-    list-style: disc;
-    padding-left: 1.25rem;
+    list-style: none;
+    padding-left: 0;
+  }
+  .prose-case :global(li) {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .prose-case :global(li)::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 0.7rem;
+    height: 0.7rem;
+    border: 3px solid var(--color-red);
+    border-radius: 999px;
   }
   .prose-case :global(a) {
-    color: var(--accent);
+    color: var(--color-blue);
     text-decoration: underline;
   }
 </style>

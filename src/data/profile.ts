@@ -2,6 +2,8 @@ export const profile = {
   name: 'Douglas Neto',
   fullName: 'Douglas Rodrigues Pinto Neto',
   role: 'Engenheiro de Software iOS',
+  tagline: 'Apps na velocidade do som',
+  kana: 'ダグラス・ネト',
   headline: 'Construo apps de pagamento para iOS usados por milhões de brasileiros.',
   bio: 'Desenvolvo para iOS desde 2017, com Swift, SwiftUI e UIKit, e passei por alguns dos maiores apps financeiros do país: Itaú, PagBank e, hoje, Mercado Pago no Mercado Livre. Também sou instrutor de Swift no iOS Lab, formando novos desenvolvedores Apple.',
   location: 'São Paulo, SP',

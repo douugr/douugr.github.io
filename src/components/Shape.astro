@@ -1,0 +1,56 @@
+---
+/**
+ * Formas decorativas das capas: traço preto com uma cópia colorida deslocada.
+ */
+type Kind = 'squiggle' | 'triangle' | 'square' | 'lollipop' | 'zigzag' | 'half' | 'ring' | 'dots' | 'bolt';
+type Color = 'blue' | 'red' | 'yellow' | 'pink';
+
+interface Props {
+  kind: Kind;
+  color?: Color;
+  size?: number;
+  rotate?: number;
+  class?: string;
+  float?: boolean;
+}
+
+const { kind, color = 'blue', size = 64, rotate = 0, class: className = '', float = false } = Astro.props;
+
+const paths: Record<Kind, { d: string; w: number; h: number; fill?: boolean }> = {
+  squiggle: { d: 'M4 20 Q 14 2 24 20 T 44 20 T 64 20 T 84 20', w: 88, h: 32 },
+  triangle: { d: 'M8 52 L32 8 L56 52 Z', w: 64, h: 60 },
+  square: { d: 'M10 10 H50 V50 H10 Z', w: 60, h: 60 },
+  lollipop: { d: 'M6 6 L40 40 M52 52 m -12 0 a 12 12 0 1 0 24 0 a 12 12 0 1 0 -24 0', w: 72, h: 72 },
+  zigzag: { d: 'M4 30 L16 8 L28 30 L40 8 L52 30 L64 8 L76 30', w: 80, h: 38 },
+  half: { d: 'M6 24 A 22 22 0 0 0 50 24 Z', w: 56, h: 50 },
+  ring: { d: 'M30 6 a 24 24 0 1 0 0.01 0 Z', w: 60, h: 60 },
+  dots: { d: 'M4 4 h10 v10 h-10 Z M22 4 h10 v10 h-10 Z M40 4 h10 v10 h-10 Z', w: 54, h: 18, fill: true },
+  bolt: { d: 'M30 4 L12 34 H28 L22 60 L46 26 H30 Z', w: 56, h: 64 },
+};
+
+const colors: Record<Color, string> = {
+  blue: 'var(--color-blue)',
+  red: 'var(--color-red)',
+  yellow: 'var(--color-yellow)',
+  pink: 'var(--color-pink)',
+};
+
+const p = paths[kind];
+const height = (size * p.h) / p.w;
+const off = Math.max(3, Math.round(p.w / 16));
+const common = p.fill
+  ? { 'stroke-width': 0 }
+  : { fill: 'none', 'stroke-width': 5, 'stroke-linecap': 'round' as const, 'stroke-linejoin': 'round' as const };
+---
+
+<svg
+  aria-hidden="true"
+  width={size}
+  height={height}
+  viewBox={`-4 -4 ${p.w + off + 8} ${p.h + off + 8}`}
+  class:list={['pointer-events-none select-none', float && 'float', className]}
+  style={`--r:${rotate}deg; transform: rotate(${rotate}deg)`}
+>
+  <path d={p.d} transform={`translate(${off} ${off})`} stroke={colors[color]} fill={p.fill ? colors[color] : 'none'} {...common} />
+  <path d={p.d} stroke="var(--color-ink)" fill={p.fill ? 'var(--color-ink)' : 'none'} {...common} />
+</svg>

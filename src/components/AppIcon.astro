@@ -3,8 +3,9 @@ interface Props {
   src: string;
   alt: string;
   class?: string;
+  shadow?: 'blue' | 'red' | 'yellow' | 'pink';
 }
-const { src, alt, class: className = 'size-16' } = Astro.props;
+const { src, alt, class: className = 'size-16', shadow = 'yellow' } = Astro.props;
 ---
 
 <img
@@ -13,5 +14,6 @@ const { src, alt, class: className = 'size-16' } = Astro.props;
   width="256"
   height="256"
   loading="lazy"
-  class:list={['rounded-[22.5%] shadow-sm ring-1 ring-black/5 dark:ring-white/10', className]}
+  class:list={['print rounded-[22.5%] border-[3px] border-ink', className]}
+  style={`box-shadow: 4px 4px 0 var(--color-${shadow})`}
 />
