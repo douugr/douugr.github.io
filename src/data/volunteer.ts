@@ -17,7 +17,7 @@ const org = 'Instituto Pró-Ativo';
 const url = 'https://institutoproativo.com.br';
 const logo = '/volunteer/proativo.png';
 const siteStack = ['HTML', 'CSS', 'Bootstrap 5.3', 'JavaScript', 'GitHub Actions', 'Spec Kit'];
-const symposiumStack = ['JavaScript'];
+const symposiumStack = ['Google Apps Script', 'JavaScript', 'Google Forms', 'Google Sheets', 'MailApp', 'QR Code', 'Node.js', 'ESLint', 'GitHub Actions', 'Spec Kit'];
 
 export const volunteer: Record<Lang, Volunteer> = {
   pt: {
@@ -40,7 +40,7 @@ export const volunteer: Record<Lang, Volunteer> = {
       {
         title: 'Sistema do 1º Simpósio',
         description:
-          'Sistema de inscrição e confirmação de presença do 1º Simpósio do instituto, dedicado ao cuidado de quem cuida de pessoas no espectro autista, com lista de espera e check-in no dia do evento.',
+          'Sistema de inscrição e confirmação de presença do 1º Simpósio do instituto, dedicado ao cuidado de quem cuida de pessoas no espectro autista: 160 vagas, lista de espera, convocação por e-mail com prazo para confirmar, código de entrada único e check-in na recepção. Roda no Google Workspace, com testes automatizados e CI.',
         stack: symposiumStack,
       },
     ],
@@ -65,7 +65,7 @@ export const volunteer: Record<Lang, Volunteer> = {
       {
         title: '1st Symposium system',
         description:
-          "Registration and attendance confirmation system for the institute's 1st Symposium, focused on caring for caregivers of autistic people, with a waiting list and event-day check-in.",
+          "Registration and attendance confirmation system for the institute's 1st Symposium, focused on caring for caregivers of autistic people: 160 seats, a waiting list, email invitations with a confirmation deadline, unique entry codes and check-in at the front desk. Runs on Google Workspace, with automated tests and CI.",
         stack: symposiumStack,
       },
     ],
@@ -90,7 +90,7 @@ export const volunteer: Record<Lang, Volunteer> = {
       {
         title: 'Sistema del 1.er Simposio',
         description:
-          'Sistema de inscripción y confirmación de asistencia del 1.er Simposio del instituto, dedicado al cuidado de quienes cuidan a personas en el espectro autista, con lista de espera y check-in el día del evento.',
+          'Sistema de inscripción y confirmación de asistencia del 1.er Simposio del instituto, dedicado al cuidado de quienes cuidan a personas en el espectro autista: 160 cupos, lista de espera, convocatoria por correo con plazo para confirmar, código de entrada único y check-in en la recepción. Funciona sobre Google Workspace, con pruebas automatizadas y CI.',
         stack: symposiumStack,
       },
     ],
