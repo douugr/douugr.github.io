@@ -1,0 +1,10 @@
+---
+import { profile } from '../data/profile';
+---
+
+<footer class="mt-24 border-t border-border">
+  <div class="mx-auto flex max-w-5xl flex-col gap-2 px-4 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <p>© {new Date().getFullYear()} {profile.fullName}</p>
+    <p class="font-mono text-xs">feito com Astro · hospedado no GitHub Pages</p>
+  </div>
+</footer>

@@ -1,0 +1,27 @@
+---
+interface Props {
+  appStore?: string;
+  playStore?: string;
+}
+const { appStore, playStore } = Astro.props;
+const base = 'inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-medium transition hover:border-accent hover:text-accent';
+---
+
+{
+  (appStore || playStore) && (
+    <div class="flex flex-wrap gap-2">
+      {appStore && (
+        <a href={appStore} target="_blank" rel="noopener" class={base}>
+          <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.6 2.1-3.8 2.2-3.9-1.2-1.8-3.1-2-3.8-2-1.6-.2-3.1.9-3.9.9-.8 0-2-.9-3.4-.9-1.7 0-3.3 1-4.2 2.6-1.8 3.1-.5 7.7 1.3 10.2.9 1.2 1.9 2.6 3.2 2.6 1.3-.1 1.8-.8 3.3-.8 1.6 0 2 .8 3.4.8 1.4 0 2.3-1.3 3.1-2.5 1-1.4 1.4-2.8 1.4-2.9 0 0-2.7-1-2.6-4.1zM13.9 4.9c.7-.9 1.2-2 1-3.2-1 0-2.3.7-3 1.6-.7.8-1.2 2-1.1 3.1 1.2.1 2.3-.6 3.1-1.5z"/></svg>
+          App Store
+        </a>
+      )}
+      {playStore && (
+        <a href={playStore} target="_blank" rel="noopener" class={base}>
+          <svg class="size-4" viewBox="0 0 24 24" fill="currentColor"><path d="M3.6 1.8c-.3.3-.4.7-.4 1.2v18c0 .5.1.9.4 1.2l10-10.2-10-10.2zm11.1 11.3 2.8 2.9-11.6 6.6 8.8-9.5zm0-2.2L5.9 1.4l11.6 6.6-2.8 2.9zm3.9-2.2 3.2 1.8c.9.5.9 1.4 0 1.9l-3.2 1.8-3.1-2.8 3.1-2.7z"/></svg>
+          Google Play
+        </a>
+      )}
+    </div>
+  )
+}
