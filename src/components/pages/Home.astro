@@ -24,13 +24,19 @@ const projects = await getProjects(lang);
 const appKeys = Object.keys(apps) as AppKey[];
 const homeApps = appKeys.map((key) => ({ name: apps[key].name, icon: apps[key].icon, href: `#app-${key}` }));
 const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
+const roleText = caps(c.role);
+const roleParts = roleText.split('SOFTWARE');
 ---
 
 <Base lang={lang} alternates={alternates}>
   <!-- ============ CAPA ============ -->
-  <section class="relative overflow-hidden">
+  <section id="hero" class="relative overflow-hidden">
     <!-- blocos de cor -->
     <div aria-hidden="true" class="absolute inset-0">
+      <div
+        id="hero-sun"
+        class="absolute top-16 right-[-6rem] size-[26rem] rounded-full border-4 border-ink bg-yellow sm:right-[-2rem] md:top-10 md:right-[4%] md:size-[34rem]"
+      ></div>
       <div class="absolute inset-x-0 bottom-0 h-[55%] bg-red" style="clip-path: polygon(100% 0, 100% 100%, 35% 100%)"></div>
       <div class="absolute inset-x-0 bottom-0 h-[45%] bg-blue" style="clip-path: polygon(0 0, 0 100%, 55% 100%)"></div>
     </div>
@@ -57,7 +63,9 @@ const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
         <h1 class="mt-6 font-display text-5xl leading-[0.9] min-[400px]:text-6xl sm:text-7xl lg:text-8xl" style="text-shadow: 5px 5px 0 var(--color-yellow), 8px 8px 0 var(--color-ink)">
           DOUGLAS<br />NETO
         </h1>
-        <p class="spaced mt-5 text-xs sm:text-sm">{caps(c.role)}</p>
+        <p class="spaced mt-5 text-xs sm:text-sm">
+          {roleParts.length === 2 ? <>{roleParts[0]}SOFT<span id="sun-anchor" />WARE{roleParts[1]}</> : roleText}
+        </p>
 
         <p class="mt-8 max-w-xl text-2xl leading-snug font-extrabold text-balance sm:text-3xl">{c.headline}</p>
 
@@ -76,10 +84,6 @@ const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
       </div>
 
       <div class="relative z-10 mx-auto w-44 sm:w-56 md:mr-6 md:w-60">
-        <div
-          aria-hidden="true"
-          class="absolute top-1/2 left-1/2 -z-10 size-[20rem] -translate-x-[40%] -translate-y-1/2 rounded-full border-4 border-ink bg-yellow sm:size-[24rem] lg:size-[30rem]"
-        ></div>
         <div class="rotate-6">
           <HomeScreen apps={homeApps} />
         </div>
@@ -220,3 +224,42 @@ const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
     </div>
   </section>
 </Base>
+
+<script>
+  // Se a borda do círculo amarelo cruzar alguma letra do cargo, encaixa a borda no vão entre o "T" e o "W" de SOFTWARE.
+  const hero = document.getElementById('hero');
+  const sun = document.getElementById('hero-sun');
+  const anchor = document.getElementById('sun-anchor');
+  const wide = matchMedia('(min-width: 768px)');
+
+  function placeSun() {
+    if (!hero || !sun || !anchor) return;
+    sun.style.left = '';
+    sun.style.right = '';
+    if (!wide.matches) return;
+
+    const role = anchor.parentElement!;
+    const h = hero.getBoundingClientRect();
+    const a = anchor.getBoundingClientRect();
+    const r = sun.offsetWidth / 2;
+    const dy = a.top + a.height / 2 - h.top - (sun.offsetTop + r);
+    if (Math.abs(dy) >= r) return;
+    const half = Math.sqrt(r * r - dy * dy);
+
+    // Onde a borda cruza a linha do cargo na posição original
+    const edge = sun.offsetLeft + r - half;
+    const range = document.createRange();
+    range.selectNodeContents(role);
+    const text = range.getBoundingClientRect();
+    if (edge < text.left - h.left || edge > text.right - h.left) return;
+
+    const spacing = parseFloat(getComputedStyle(role).letterSpacing) || 0;
+    const gap = a.left - h.left - spacing / 2;
+    sun.style.left = `${gap + half - r}px`;
+    sun.style.right = 'auto';
+  }
+
+  placeSun();
+  document.fonts?.ready.then(placeSun);
+  addEventListener('resize', placeSun);
+</script>
