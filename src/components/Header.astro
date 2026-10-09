@@ -12,6 +12,7 @@ const links = [
   { href: `${home}#projetos`, label: t('nav.projects') },
   { href: `${home}#apps`, label: t('nav.apps') },
   { href: `${home}#experiencia`, label: t('nav.career') },
+  { href: `${home}#voluntariado`, label: t('nav.volunteer'), wideOnly: true },
   { href: `${home}#stack`, label: t('nav.stack') },
   { href: `${home}#contato`, label: t('nav.contact') },
 ];
@@ -26,7 +27,7 @@ const links = [
       <ul class="hidden items-center gap-5 font-cond text-base tracking-widest uppercase md:flex">
         {
           links.map((l) => (
-            <li>
+            <li class:list={[l.wideOnly && 'hidden lg:list-item']}>
               <a href={l.href} class="decoration-yellow decoration-[3px] underline-offset-4 transition hover:text-yellow hover:underline">
                 {l.label}
               </a>

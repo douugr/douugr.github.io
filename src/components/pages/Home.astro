@@ -8,6 +8,7 @@ import Shape from '../Shape.astro';
 import Tags from '../Tags.astro';
 import { apps, type AppKey } from '../../data/apps';
 import { person, content } from '../../data/profile';
+import { volunteer } from '../../data/volunteer';
 import { caps } from '../../lib/caps';
 import { getProjects } from '../../lib/projects';
 import { langs, homePath, useTranslations, type Lang } from '../../i18n/ui';
@@ -18,6 +19,7 @@ interface Props {
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const c = content[lang];
+const v = volunteer[lang];
 const alternates = Object.fromEntries(langs.map((l) => [l, homePath(l)])) as Record<Lang, string>;
 
 const projects = await getProjects(lang);
@@ -155,6 +157,71 @@ const roleParts = roleText.split('SOFTWARE');
     </div>
   </section>
 
+  <!-- ============ VOLUNTARIADO ============ -->
+  <section id="voluntariado" class="relative scroll-mt-14">
+    <div class="zigzag" style="--zz-color: var(--color-pink)"></div>
+    <div class="relative overflow-hidden bg-pink py-20">
+      <div aria-hidden="true" class="absolute -right-24 -bottom-32 size-80 rounded-full border-4 border-ink bg-yellow"></div>
+      <Shape kind="squiggle" color="blue" size={110} rotate={8} class="absolute top-12 right-[6%] hidden sm:block" float />
+      <Shape kind="ring" color="yellow" size={44} class="absolute bottom-12 left-[45%] hidden md:block" />
+      <div class="wrap relative">
+        <div class="mb-12">
+          <p class="font-pixel text-xs tracking-widest text-ink">zone 04 · bonus stage</p>
+          <div class="mt-3 flex flex-wrap items-end gap-x-4 gap-y-2">
+            <h2
+              class="inline-block -skew-x-6 -rotate-1 bg-ink px-4 pt-2 pb-1 font-cond text-4xl tracking-wide text-paper uppercase sm:text-5xl"
+              style="box-shadow: 6px 6px 0 var(--color-blue)"
+            >
+              {t('volunteer.title')}
+            </h2>
+            <span class="font-display text-sm text-ink/70" lang="ja">ボランティア</span>
+          </div>
+          <p class="mt-5 max-w-2xl text-lg font-semibold">{t('volunteer.subtitle')}</p>
+        </div>
+
+        <article class="hard bg-card p-5 sm:p-8" style="--shadow: var(--color-ink)">
+          <div class="flex flex-col gap-6 sm:flex-row sm:items-start">
+            <img src={v.logo} alt={v.org} width="160" height="181" loading="lazy" class="print h-28 w-auto shrink-0 self-start sm:h-32" />
+            <div class="flex-1">
+              <div class="flex flex-wrap items-center gap-3">
+                <p class="font-pixel text-[11px]">{v.period}</p>
+                <span class="bg-red px-2 py-0.5 font-pixel text-[10px] text-paper">now playing</span>
+              </div>
+              <h3 class="mt-2 font-display text-2xl sm:text-3xl">{v.org}</h3>
+              <p class="text-sm font-semibold text-muted">{v.location}</p>
+              <p class="mt-2 font-cond text-lg tracking-wide text-blue">{caps(v.role)}</p>
+              <p class="mt-3 max-w-3xl leading-relaxed text-muted">{v.mission}</p>
+              <a
+                href={v.url}
+                target="_blank"
+                rel="noopener"
+                class="hard-sm hard-hover mt-5 inline-flex items-center gap-2 bg-ink px-3 py-1.5 font-cond text-sm tracking-wider text-paper uppercase"
+                style="--shadow: var(--color-pink)"
+              >
+                {t('volunteer.visit')} ↗
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-6 md:grid-cols-2">
+            {
+              v.items.map((item, i) => (
+                <div class="hard flex flex-col bg-paper p-5" style={`--shadow: var(--color-${i % 2 ? 'yellow' : 'blue'})`}>
+                  <h4 class="font-display text-xl" set:html={item.title.replace('º', '<span class="font-sans font-black">º</span>')} />
+                  <p class="mt-2 flex-1 leading-relaxed text-muted">{item.description}</p>
+                  <div class="mt-4">
+                    <Tags items={item.stack} />
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+      </div>
+    </div>
+    <div class="zigzag down" style="--zz-color: var(--color-pink)"></div>
+  </section>
+
   <!-- ============ STACK ============ -->
   <section id="stack" class="relative scroll-mt-14">
     <div class="zigzag" style="--zz-color: var(--color-red)"></div>
@@ -162,7 +229,7 @@ const roleParts = roleText.split('SOFTWARE');
       <div aria-hidden="true" class="absolute -right-20 -bottom-28 size-80 rounded-full border-4 border-ink bg-yellow"></div>
       <Shape kind="square" color="yellow" size={44} rotate={-14} class="absolute top-14 right-[8%]" float />
       <div class="wrap relative">
-        <SectionTitle zone="zone 04 · act 1" title={t('stack.title')} kana="スキル" shadow="blue" inverse />
+        <SectionTitle zone="zone 05 · act 1" title={t('stack.title')} kana="スキル" shadow="blue" inverse />
         <div class="grid gap-6 text-ink sm:grid-cols-2 lg:grid-cols-3">
           {
             c.skills.map((s, i) => (
@@ -199,7 +266,7 @@ const roleParts = roleText.split('SOFTWARE');
     <Shape kind="triangle" color="red" size={50} rotate={20} class="absolute right-[8%] bottom-14" float />
     <Shape kind="zigzag" color="blue" size={80} rotate={6} class="absolute top-16 right-[12%] hidden md:block" />
     <div class="wrap relative text-center">
-      <p class="font-pixel text-xs tracking-widest text-blue">zone 05 · final</p>
+      <p class="font-pixel text-xs tracking-widest text-blue">zone 06 · final</p>
       <h2 class="mt-4 font-display text-4xl leading-tight sm:text-6xl" style="text-shadow: 4px 4px 0 var(--color-paper)">{t('contact.title')}</h2>
       <p class="mx-auto mt-4 max-w-md text-lg font-semibold">{t('contact.subtitle')} {c.location}.</p>
 
