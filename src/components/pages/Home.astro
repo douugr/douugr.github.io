@@ -31,7 +31,6 @@ const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
   <section class="relative overflow-hidden">
     <!-- blocos de cor -->
     <div aria-hidden="true" class="absolute inset-0">
-      <div class="absolute top-16 right-[-6rem] size-[26rem] rounded-full border-4 border-ink bg-yellow sm:right-[-2rem] md:top-10 md:right-[4%] md:size-[34rem]"></div>
       <div class="absolute inset-x-0 bottom-0 h-[55%] bg-red" style="clip-path: polygon(100% 0, 100% 100%, 35% 100%)"></div>
       <div class="absolute inset-x-0 bottom-0 h-[45%] bg-blue" style="clip-path: polygon(0 0, 0 100%, 55% 100%)"></div>
     </div>
@@ -77,25 +76,20 @@ const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
       </div>
 
       <div class="relative z-10 mx-auto w-44 sm:w-56 md:mr-6 md:w-60">
+        <div
+          aria-hidden="true"
+          class="absolute top-1/2 left-1/2 -z-10 size-[20rem] -translate-x-[40%] -translate-y-1/2 rounded-full border-4 border-ink bg-yellow sm:size-[24rem] lg:size-[30rem]"
+        ></div>
         <div class="rotate-6">
           <HomeScreen apps={homeApps} />
         </div>
       </div>
     </div>
 
-    <!-- faixa do título -->
+    <!-- fechamento da capa -->
     <div class="relative z-10">
       <div class="zigzag" style="--zz-color: var(--color-blue-deep)"></div>
-      <div class="bg-blue-deep pt-6 pb-8 text-paper">
-        <div class="wrap">
-          <p
-            class="block w-fit -skew-x-12 -rotate-1 font-cond text-4xl tracking-wide text-yellow uppercase sm:text-6xl md:text-7xl"
-            style="text-shadow: 4px 4px 0 var(--color-ink)"
-          >
-            {c.tagline}
-          </p>
-        </div>
-      </div>
+      <div class="h-5 bg-blue-deep"></div>
     </div>
   </section>
 

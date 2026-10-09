@@ -18,7 +18,6 @@ type Education = { school: string; course: string; period: string };
 
 type Content = {
   role: string;
-  tagline: string;
   headline: string;
   bio: string;
   location: string;
@@ -40,7 +39,6 @@ const stackItems = {
 export const content: Record<Lang, Content> = {
   pt: {
     role: 'Engenheiro de Software iOS',
-    tagline: 'Apps na velocidade do som',
     headline: 'Construo apps de pagamento para iOS usados por milhões de brasileiros.',
     bio: 'Desenvolvo para iOS desde 2017, com Swift, SwiftUI e UIKit, e passei por alguns dos maiores apps financeiros do país: Itaú, PagBank e, hoje, Mercado Pago no Mercado Livre. Também sou instrutor de Swift no iOS Lab, formando novos desenvolvedores Apple.',
     location: 'São Paulo, SP',
@@ -102,7 +100,6 @@ export const content: Record<Lang, Content> = {
 
   en: {
     role: 'iOS Software Engineer',
-    tagline: 'Apps at the speed of sound',
     headline: 'I build iOS payment apps used by millions of Brazilians.',
     bio: "I've been building for iOS since 2017 with Swift, SwiftUI and UIKit, working on some of Brazil's largest financial apps: Itaú, PagBank and, today, Mercado Pago at Mercado Libre. I'm also a Swift instructor at iOS Lab, training the next generation of Apple developers.",
     location: 'São Paulo, Brazil',
@@ -164,7 +161,6 @@ export const content: Record<Lang, Content> = {
 
   es: {
     role: 'Ingeniero de Software iOS',
-    tagline: 'Apps a la velocidad del sonido',
     headline: 'Desarrollo apps de pagos para iOS que usan millones de brasileños.',
     bio: 'Desarrollo para iOS desde 2017 con Swift, SwiftUI y UIKit, y trabajé en algunas de las mayores apps financieras de Brasil: Itaú, PagBank y, hoy, Mercado Pago en Mercado Libre. También soy instructor de Swift en iOS Lab, formando a nuevos desarrolladores Apple.',
     location: 'São Paulo, Brasil',
