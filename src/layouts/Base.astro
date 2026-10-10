@@ -1,4 +1,6 @@
 ---
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -16,7 +18,10 @@ interface Props {
 const { lang, alternates, title = `${person.name} · ${content[lang].role}`, description = content[lang].headline } = Astro.props;
 const t = useTranslations(lang);
 const canonical = new URL(alternates[lang], Astro.site);
-const ogImage = new URL(`/og/og-${lang}.png`, Astro.site);
+// O ?v= muda sempre que a imagem muda, para LinkedIn, WhatsApp e X não ficarem com a versão antiga em cache.
+const ogPath = `/og/og-${lang}.png`;
+const ogVersion = createHash('sha1').update(readFileSync(`public${ogPath}`)).digest('hex').slice(0, 8);
+const ogImage = new URL(`${ogPath}?v=${ogVersion}`, Astro.site);
 ---
 
 <!doctype html>
