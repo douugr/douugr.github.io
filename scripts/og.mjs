@@ -76,7 +76,7 @@ function svg(lang) {
   <!-- rabiscos -->
   ${shape('M8 52 L32 8 L56 52 Z', C.blue, 1080, 50, 14)}
   ${shape('M4 20 Q 14 2 24 20 T 44 20 T 64 20 T 84 20', C.pink, 640, 110, -18, 1.2)}
-  ${shape('M10 10 H50 V50 H10 Z', C.red, 600, 470, 18, 0.8)}
+  ${shape('M10 10 H50 V50 H10 Z', C.red, 520, 478, 18, 0.8)}
   ${shape('M6 24 A 22 22 0 0 0 50 24 Z', C.yellow, 372, 44, -30)}
   ${shape('M4 30 L16 8 L28 30 L40 8 L52 30 L64 8 L76 30', C.blue, 1050, 400, -8)}
 
@@ -105,12 +105,6 @@ function svg(lang) {
   <!-- cargo espaçado -->
   <text x="60" y="440" font-family="Archivo Black" font-size="24" letter-spacing="8" fill="${C.ink}">${roles[lang]}</text>
 
-  <!-- empresas em caixa preta inclinada -->
-  <g transform="translate(60 470) skewX(-12)">
-    <rect x="6" y="6" width="470" height="56" fill="${C.red}" />
-    <rect width="470" height="56" fill="${C.ink}" />
-    <text x="235" y="42" font-family="Anton" font-size="32" letter-spacing="1.5" fill="${C.yellow}" text-anchor="middle">MERCADO PAGO · ITAÚ · PAGBANK</text>
-  </g>
 
   <!-- faixa inferior -->
   ${zigzag(H - 66, C.blueDeep)}
