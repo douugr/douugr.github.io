@@ -22,5 +22,6 @@ O site está em português (`/`), inglês (`/en/`) e espanhol (`/es/`).
 - `src/data/apps.ts`: apps da App Store (ícone, nota, link)
 - `src/i18n/ui.ts`: textos fixos da interface (menu, botões, títulos)
 - `public/`: imagens e `curriculo.pdf`
+- `scripts/og.mjs`: imagens de compartilhamento (LinkedIn, WhatsApp). Depois de mudar nome ou cargo, rode `npm run og` e faça commit de `public/og/`
 
 Push na `main` publica automaticamente.

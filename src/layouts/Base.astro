@@ -16,6 +16,7 @@ interface Props {
 const { lang, alternates, title = `${person.name} · ${content[lang].role}`, description = content[lang].headline } = Astro.props;
 const t = useTranslations(lang);
 const canonical = new URL(alternates[lang], Astro.site);
+const ogImage = new URL(`/og/og-${lang}.png`, Astro.site);
 ---
 
 <!doctype html>
@@ -37,7 +38,16 @@ const canonical = new URL(alternates[lang], Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={ogLocale[lang]} />
-    <meta name="twitter:card" content="summary" />
+    {langs.filter((l) => l !== lang).map((l) => <meta property="og:locale:alternate" content={ogLocale[l]} />)}
+    <meta property="og:site_name" content="douugr.dev.br" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t('og.alt')} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={t('og.alt')} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
