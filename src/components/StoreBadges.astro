@@ -4,8 +4,10 @@ import { useTranslations, type Lang } from '../i18n/ui';
 interface Props {
   appStore?: string;
   lang: Lang;
+  /** Nome do evento de clique no analytics (ex.: "app-store-itau"). */
+  event?: string;
 }
-const { appStore, lang } = Astro.props;
+const { appStore, lang, event } = Astro.props;
 const t = useTranslations(lang);
 ---
 
@@ -13,6 +15,7 @@ const t = useTranslations(lang);
   appStore && (
     <a
       href={appStore}
+      data-goatcounter-click={event}
       target="_blank"
       rel="noopener"
       class="hard-sm hard-hover inline-flex items-center gap-2 bg-ink px-3 py-1.5 font-cond text-sm tracking-wider text-paper uppercase"

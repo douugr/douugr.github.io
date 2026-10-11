@@ -92,7 +92,7 @@ const alternates = Object.fromEntries(
           <p class="mb-3 font-cond text-lg tracking-widest uppercase">Stack</p>
           <Tags items={data.stack} />
         </div>
-        {app && <StoreBadges appStore={app.appStore} lang={lang} />}
+        {app && <StoreBadges appStore={app.appStore} lang={lang} event={`app-store-${data.app}`} />}
       </aside>
     </div>
   </article>

@@ -52,6 +52,7 @@ export const ui = {
     'project.company': 'empresa',
     'project.app': 'app',
     'footer.built': 'feito com Astro · GitHub Pages',
+    'footer.analytics': 'Visitas contadas com GoatCounter, sem cookies e sem dados pessoais.',
     'footer.note':
       'Marcas e ícones de apps pertencem às respectivas empresas. Este é um site pessoal, sem vínculo oficial com elas. Estética inspirada nas capas de videogame dos anos 90.',
   },
@@ -90,6 +91,7 @@ export const ui = {
     'project.company': 'company',
     'project.app': 'app',
     'footer.built': 'built with Astro · GitHub Pages',
+    'footer.analytics': 'Visits counted with GoatCounter, with no cookies and no personal data.',
     'footer.note':
       'App names and icons belong to their respective companies. This is a personal website with no official affiliation. Design inspired by 90s video game box art.',
   },
@@ -128,6 +130,7 @@ export const ui = {
     'project.company': 'empresa',
     'project.app': 'app',
     'footer.built': 'hecho con Astro · GitHub Pages',
+    'footer.analytics': 'Visitas contadas con GoatCounter, sin cookies ni datos personales.',
     'footer.note':
       'Las marcas e íconos de las apps pertenecen a sus respectivas empresas. Este es un sitio personal, sin vínculo oficial con ellas. Estética inspirada en las portadas de videojuegos de los años 90.',
   },

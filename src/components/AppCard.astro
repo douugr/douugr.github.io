@@ -45,6 +45,6 @@ const app = apps[appKey];
     )
   }
   <div class="mt-auto pt-6">
-    <StoreBadges appStore={app.appStore} lang={lang} />
+    <StoreBadges appStore={app.appStore} lang={lang} event={`app-store-${appKey}`} />
   </div>
 </article>
