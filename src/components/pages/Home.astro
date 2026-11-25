@@ -22,7 +22,9 @@ const c = content[lang];
 const v = volunteer[lang];
 const alternates = Object.fromEntries(langs.map((l) => [l, homePath(l)])) as Record<Lang, string>;
 
-const projects = await getProjects(lang);
+const allProjects = await getProjects(lang);
+const projects = allProjects.filter((p) => !p.data.personal);
+const personalProjects = allProjects.filter((p) => p.data.personal);
 const appKeys = Object.keys(apps) as AppKey[];
 const homeApps = appKeys.map((key) => ({ name: apps[key].name, icon: apps[key].icon, href: `#app-${key}` }));
 const shadows = ['blue', 'red', 'yellow', 'pink'] as const;
@@ -128,6 +130,22 @@ const roleParts = roleText.split('SOFTWARE');
     </div>
     <div class="zigzag down" style="--zz-color: var(--color-blue)"></div>
   </section>
+
+  <!-- ============ PROJETOS PESSOAIS ============ -->
+  {
+    personalProjects.length > 0 && (
+      <section id="pessoais" class="relative scroll-mt-14 overflow-hidden py-20">
+        <Shape kind="bolt" color="pink" size={50} rotate={-10} class="absolute top-14 right-[7%] hidden sm:block" float />
+        <Shape kind="half" color="blue" size={46} rotate={20} class="absolute bottom-14 left-[2%] hidden lg:block" float />
+        <div class="wrap relative">
+          <SectionTitle zone="zone 02 · side quest" title={t('personal.title')} kana="サイドクエスト" subtitle={t('personal.subtitle')} shadow="pink" />
+          <div class="grid gap-8 md:grid-cols-2">
+            {personalProjects.map((project, i) => <ProjectCard project={project} lang={lang} shadow={(['pink', 'yellow', 'blue', 'red'] as const)[i % 4]} />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <!-- ============ CARREIRA ============ -->
   <section id="experiencia" class="relative scroll-mt-14 overflow-hidden py-20">

@@ -5,6 +5,7 @@ import AppIcon from '../AppIcon.astro';
 import StoreBadges from '../StoreBadges.astro';
 import Shape from '../Shape.astro';
 import Tags from '../Tags.astro';
+import ProjectLinks from '../ProjectLinks.astro';
 import { apps } from '../../data/apps';
 import { person } from '../../data/profile';
 import { caps } from '../../lib/caps';
@@ -46,7 +47,7 @@ const alternates = Object.fromEntries(
       <Shape kind="triangle" color="pink" size={44} rotate={10} class="absolute top-10 right-[40%] hidden sm:block" float />
 
       <div class="wrap relative pt-10 pb-14">
-        <a href={`${homePath(lang)}#projetos`} class="hard-sm hard-hover inline-block bg-card px-3 py-1 font-pixel text-[11px]" style="--shadow: var(--color-blue)">{t('project.back')}</a>
+        <a href={`${homePath(lang)}#${data.personal ? 'pessoais' : 'projetos'}`} class="hard-sm hard-hover inline-block bg-card px-3 py-1 font-pixel text-[11px]" style="--shadow: var(--color-blue)">{t('project.back')}</a>
 
         <div class="mt-10 flex flex-col gap-8 sm:flex-row sm:items-center">
           {icon && <AppIcon src={icon} alt="" class="size-24 shrink-0 sm:size-32" shadow="blue" />}
@@ -93,6 +94,7 @@ const alternates = Object.fromEntries(
           <Tags items={data.stack} />
         </div>
         {app && <StoreBadges appStore={app.appStore} lang={lang} event={`app-store-${data.app}`} />}
+        <ProjectLinks links={data.links} lang={lang} event={project.slug} />
       </aside>
     </div>
   </article>
@@ -114,6 +116,14 @@ const alternates = Object.fromEntries(
   }
   .prose-case :global(h2:first-child) {
     margin-top: 0;
+  }
+  .prose-case :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: 2rem;
+    border: 3px solid var(--color-ink);
+    box-shadow: 6px 6px 0 var(--color-blue);
   }
   .prose-case :global(p),
   .prose-case :global(li) {

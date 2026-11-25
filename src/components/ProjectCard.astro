@@ -1,6 +1,7 @@
 ---
 import AppIcon from './AppIcon.astro';
 import Tags from './Tags.astro';
+import ProjectLinks from './ProjectLinks.astro';
 import { apps } from '../data/apps';
 import { caps } from '../lib/caps';
 import type { Project } from '../lib/projects';
@@ -40,6 +41,7 @@ const icon = data.icon ?? app?.icon;
     {data.note && <p class="mt-3 border-l-4 border-yellow pl-3 text-sm text-muted italic">{data.note}</p>}
     <div class="mt-auto pt-5">
       <Tags items={data.stack} />
+      <ProjectLinks links={data.links} lang={lang} event={project.slug} class="mt-5" />
     </div>
   </div>
 </article>

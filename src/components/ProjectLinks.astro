@@ -1,0 +1,41 @@
+---
+import StoreBadges from './StoreBadges.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+type Link = { kind: 'appStore' | 'site' | 'code' | 'cydia'; url: string };
+
+interface Props {
+  links: Link[];
+  lang: Lang;
+  /** Prefixo do evento de clique no analytics (ex.: "paddeck"). */
+  event: string;
+  class?: string;
+}
+const { links, lang, event, class: className } = Astro.props;
+const t = useTranslations(lang);
+const label = { site: t('link.site'), code: t('link.code'), cydia: t('link.cydia') } as const;
+const shadow = { site: 'yellow', code: 'pink', cydia: 'red' } as const;
+---
+
+{
+  links.length > 0 && (
+    <div class:list={['relative z-10 flex flex-wrap items-center gap-3', className]}>
+      {links.map((link) =>
+        link.kind === 'appStore' ? (
+          <StoreBadges appStore={link.url} lang={lang} event={`app-store-${event}`} />
+        ) : (
+          <a
+            href={link.url}
+            data-goatcounter-click={`${link.kind}-${event}`}
+            target="_blank"
+            rel="noopener"
+            class="hard-sm hard-hover inline-flex items-center gap-1 bg-card px-3 py-1.5 font-cond text-sm tracking-wider uppercase"
+            style={`--shadow: var(--color-${shadow[link.kind]})`}
+          >
+            {label[link.kind]} ↗
+          </a>
+        ),
+      )}
+    </div>
+  )
+}

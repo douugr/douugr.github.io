@@ -21,6 +21,12 @@ const projects = defineCollection({
     icon: z.string().optional(),
     note: z.string().optional(),
     draft: z.boolean().default(false),
+    /** Projeto pessoal: aparece na seção "Projetos pessoais", fora da lista profissional. */
+    personal: z.boolean().default(false),
+    /** Links do projeto (App Store, site, código…), mostrados no card e na página. */
+    links: z
+      .array(z.object({ kind: z.enum(['appStore', 'site', 'code', 'cydia']), url: z.string().url() }))
+      .default([]),
   }),
 });
 
