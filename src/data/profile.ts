@@ -8,7 +8,7 @@ export const person = {
   resumeUrl: '', // TODO: colocar o PDF em public/ e usar '/curriculo.pdf'
   social: {
     github: 'https://github.com/douugr',
-    linkedin: 'https://www.linkedin.com/in/douglasrodriguespintoneto',
+    linkedin: 'https://www.linkedin.com/in/douugr',
   },
 };
 
