@@ -8,6 +8,7 @@ kind: Side project
 summary: Turns an iPhone or iPad into a wireless trackpad, keyboard and shortcut deck for the Mac. On the App Store, with a free Mac app and a version for old jailbroken iPads.
 stack: [Swift, UIKit, SwiftUI, Network.framework, Objective-C, macOS, Bonjour, App Store]
 icon: /projects/paddeck/icon.webp
+screenshot: /projects/paddeck/ipad-en.jpg
 personal: true
 links:
   - kind: appStore

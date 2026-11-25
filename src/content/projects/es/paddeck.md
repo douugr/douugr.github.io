@@ -8,6 +8,7 @@ kind: Proyecto personal
 summary: Convierte el iPhone o el iPad en trackpad, teclado y panel de atajos inalámbrico para el Mac. Publicado en App Store, con una app gratuita para Mac y una versión para iPads antiguos con jailbreak.
 stack: [Swift, UIKit, SwiftUI, Network.framework, Objective-C, macOS, Bonjour, App Store]
 icon: /projects/paddeck/icon.webp
+screenshot: /projects/paddeck/ipad-en.jpg
 personal: true
 links:
   - kind: appStore

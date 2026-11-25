@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import SectionTitle from '../SectionTitle.astro';
 import HomeScreen from '../HomeScreen.astro';
 import ProjectCard from '../ProjectCard.astro';
+import FeaturedProject from '../FeaturedProject.astro';
 import AppCard from '../AppCard.astro';
 import Shape from '../Shape.astro';
 import Tags from '../Tags.astro';
@@ -131,22 +132,6 @@ const roleParts = roleText.split('SOFTWARE');
     <div class="zigzag down" style="--zz-color: var(--color-blue)"></div>
   </section>
 
-  <!-- ============ PROJETOS PESSOAIS ============ -->
-  {
-    personalProjects.length > 0 && (
-      <section id="pessoais" class="relative scroll-mt-14 overflow-hidden py-20">
-        <Shape kind="bolt" color="pink" size={50} rotate={-10} class="absolute top-14 right-[7%] hidden sm:block" float />
-        <Shape kind="half" color="blue" size={46} rotate={20} class="absolute bottom-14 left-[2%] hidden lg:block" float />
-        <div class="wrap relative">
-          <SectionTitle zone="zone 02 · side quest" title={t('personal.title')} kana="サイドクエスト" subtitle={t('personal.subtitle')} shadow="pink" />
-          <div class="grid gap-8 md:grid-cols-2">
-            {personalProjects.map((project, i) => <ProjectCard project={project} lang={lang} shadow={(['pink', 'yellow', 'blue', 'red'] as const)[i % 4]} />)}
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   <!-- ============ CARREIRA ============ -->
   <section id="experiencia" class="relative scroll-mt-14 overflow-hidden py-20">
     <Shape kind="lollipop" color="blue" size={64} rotate={20} class="absolute top-16 right-[6%] hidden sm:block" float />
@@ -241,6 +226,22 @@ const roleParts = roleText.split('SOFTWARE');
     <div class="zigzag down" style="--zz-color: var(--color-pink)"></div>
   </section>
 
+  <!-- ============ PROJETOS PESSOAIS ============ -->
+  {
+    personalProjects.length > 0 && (
+      <section id="pessoais" class="relative scroll-mt-14 overflow-hidden py-20">
+        <Shape kind="bolt" color="pink" size={50} rotate={-10} class="absolute top-14 right-[7%] hidden sm:block" float />
+        <Shape kind="half" color="blue" size={46} rotate={20} class="absolute bottom-14 left-[2%] hidden lg:block" float />
+        <div class="wrap relative">
+          <SectionTitle zone="zone 05 · side quest" title={t('personal.title')} kana="サイドクエスト" subtitle={t('personal.subtitle')} shadow="pink" />
+          <div class="space-y-12">
+            {personalProjects.map((project, i) => <FeaturedProject project={project} lang={lang} shadow={(['pink', 'blue', 'red', 'yellow'] as const)[i % 4]} flip={i % 2 === 1} />)}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   <!-- ============ STACK ============ -->
   <section id="stack" class="relative scroll-mt-14">
     <div class="zigzag" style="--zz-color: var(--color-red)"></div>
@@ -248,7 +249,7 @@ const roleParts = roleText.split('SOFTWARE');
       <div aria-hidden="true" class="absolute -right-20 -bottom-28 size-80 rounded-full border-4 border-ink bg-yellow"></div>
       <Shape kind="square" color="yellow" size={44} rotate={-14} class="absolute top-14 right-[8%]" float />
       <div class="wrap relative">
-        <SectionTitle zone="zone 05 · act 1" title={t('stack.title')} kana="スキル" shadow="blue" inverse />
+        <SectionTitle zone="zone 06 · act 1" title={t('stack.title')} kana="スキル" shadow="blue" inverse />
         <div class="grid gap-6 text-ink sm:grid-cols-2 lg:grid-cols-3">
           {
             c.skills.map((s, i) => (
@@ -285,7 +286,7 @@ const roleParts = roleText.split('SOFTWARE');
     <Shape kind="triangle" color="red" size={50} rotate={20} class="absolute right-[8%] bottom-14" float />
     <Shape kind="zigzag" color="blue" size={80} rotate={6} class="absolute top-16 right-[12%] hidden md:block" />
     <div class="wrap relative text-center">
-      <p class="font-pixel text-xs tracking-widest text-blue">zone 06 · final</p>
+      <p class="font-pixel text-xs tracking-widest text-blue">zone 07 · final</p>
       <h2 class="mt-4 font-display text-4xl leading-tight sm:text-6xl" style="text-shadow: 4px 4px 0 var(--color-paper)">{t('contact.title')}</h2>
       <p class="mx-auto mt-4 max-w-md text-lg font-semibold">{t('contact.subtitle')} {c.location}.</p>
 

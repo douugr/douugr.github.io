@@ -19,6 +19,8 @@ const projects = defineCollection({
     /** Aparece no card do app, mas sem dizer que o projeto faz parte dele (ex.: um SDK da mesma empresa). */
     relatedApp: z.enum(appKeys).optional(),
     icon: z.string().optional(),
+    /** Print do app (4:3), mostrado no destaque dos projetos pessoais. */
+    screenshot: z.string().optional(),
     note: z.string().optional(),
     draft: z.boolean().default(false),
     /** Projeto pessoal: aparece na seção "Projetos pessoais", fora da lista profissional. */

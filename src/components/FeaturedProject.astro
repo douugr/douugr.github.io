@@ -1,0 +1,75 @@
+---
+import AppIcon from './AppIcon.astro';
+import Tags from './Tags.astro';
+import ProjectLinks from './ProjectLinks.astro';
+import { caps } from '../lib/caps';
+import type { Project } from '../lib/projects';
+import { projectPath, useTranslations, type Lang } from '../i18n/ui';
+
+interface Props {
+  project: Project;
+  lang: Lang;
+  shadow?: 'blue' | 'red' | 'yellow' | 'pink';
+  /** Inverte o lado do print (para alternar quando houver mais de um projeto). */
+  flip?: boolean;
+}
+const { project, lang, shadow = 'pink', flip = false } = Astro.props;
+const t = useTranslations(lang);
+const { data } = project;
+const href = projectPath(lang, project.slug);
+---
+
+<article class="hard relative grid bg-card lg:grid-cols-[1.05fr_1fr]" style={`--shadow: var(--color-${shadow})`}>
+  <!-- texto -->
+  <div class:list={['flex flex-col', flip && 'lg:order-2']}>
+    <div class="flex items-center justify-between gap-3 border-b-[3px] border-ink bg-ink px-4 py-2 text-paper">
+      <span class="font-pixel text-[11px]">{data.period}</span>
+      <span class="font-cond text-xs tracking-widest text-yellow uppercase">{data.kind}</span>
+    </div>
+    <div class="flex flex-1 flex-col p-5 sm:p-8">
+      <div class="flex items-center gap-5">
+        {data.icon && <AppIcon src={data.icon} alt="" class="size-20 shrink-0 sm:size-24" shadow={shadow} />}
+        <div>
+          <h3 class="font-display text-3xl leading-tight sm:text-4xl">
+            <a href={href} class="hover:underline focus-visible:underline">{data.title}</a>
+          </h3>
+          <p class="mt-1 font-cond text-base tracking-wide text-red">{caps(data.role)}</p>
+        </div>
+      </div>
+      <p class="mt-5 text-lg leading-relaxed text-muted">{data.summary}</p>
+      <div class="mt-5">
+        <Tags items={data.stack} />
+      </div>
+      <div class="mt-auto pt-7">
+        <ProjectLinks links={data.links} lang={lang} event={project.slug} />
+        <a
+          href={href}
+          data-goatcounter-click={`detalhes-${project.slug}`}
+          class="mt-5 inline-flex items-center gap-2 font-cond text-sm tracking-widest uppercase underline decoration-[3px] underline-offset-4 hover:text-blue"
+        >
+          {t('personal.details')} →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- print -->
+  {
+    data.screenshot && (
+      <div
+        class:list={[
+          'relative flex items-center justify-center overflow-hidden border-t-[3px] border-ink bg-yellow px-6 py-10 sm:px-10 lg:border-t-0',
+          flip ? 'lg:order-1 lg:border-r-[3px]' : 'lg:border-l-[3px]',
+        ]}
+      >
+        <div aria-hidden="true" class="absolute -right-16 -bottom-20 size-64 rounded-full border-4 border-ink bg-pink"></div>
+        <div aria-hidden="true" class="absolute -top-10 -left-10 size-32 rotate-12 border-4 border-ink bg-blue"></div>
+        <a href={href} tabindex="-1" aria-hidden="true" class="relative block w-full max-w-md rotate-2 transition-transform hover:rotate-0">
+          <div class="rounded-[1.6rem] border-[3px] border-ink bg-ink p-2.5 sm:p-3" style="box-shadow: 8px 8px 0 var(--color-ink)">
+            <img src={data.screenshot} alt="" width="1600" height="1200" loading="lazy" class="block w-full rounded-[1rem]" />
+          </div>
+        </a>
+      </div>
+    )
+  }
+</article>
